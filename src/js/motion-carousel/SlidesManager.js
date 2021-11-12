@@ -44,7 +44,7 @@ export default class SlidesManager {
 	}
 
 	updatePos(normalPosition = 0) {
-		if (Math.abs(normalPosition) > 1) k %= 1; // eslint-disable-line
+		if (Math.abs(normalPosition) > 1) normalPosition %= 1; // eslint-disable-line
 
 		this.state.slides.forEach((slide, index) => {
 			const sign = index % 2 === 0 ? -1 : 1;
