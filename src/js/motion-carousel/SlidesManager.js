@@ -19,6 +19,9 @@ export default class SlidesManager {
 				new Slide(this.generalManager),
 				new Slide(this.generalManager),
 				new Slide(this.generalManager),
+				new Slide(this.generalManager),
+				new Slide(this.generalManager),
+				new Slide(this.generalManager),
 			],
 		};
 
@@ -26,16 +29,7 @@ export default class SlidesManager {
 	}
 
 	create() {
-		this.state.slides.forEach((slide, i) => {
-			// const sign = i % 2 === 0 ? -1 : 1;
-			// const zDecrement = i % 2 === 0 ? 0 : 1;
-
-			// const index = i + 0.1;
-
-			// const x = sign * (index + zDecrement);
-			// const z = Math.abs(x) ** 1.1;
-			slide.create();
-		});
+		this.state.slides.forEach((slide) => slide.create());
 
 		this.updatePos();
 	}
@@ -46,55 +40,26 @@ export default class SlidesManager {
 
 	tick(time) {
 		// return this;
-		this.updatePos(-time / 50);
+		this.updatePos(time / 1000);
 	}
 
-	updatePos(k = 0) {
-		if (Math.abs(k) >= this.state.slides.length) k = k % this.state.slides.length; // eslint-disable-line
-		// console.log(k);
-		// const c = k % 2 === 0 ? -(k - 1) : k;
-		this.state.slides.forEach((slide, i) => {
-			// const maxX = this.state.slides.length;
-			// if (Math.abs(x) > maxX) {
-			// 	x = -sign * (slide.index - 1 - zDecrement) - k * 2;
-			// 	console.log(slide.index);
-			// 	// slide.index += 1; // eslint-disable-line
-			// }
+	updatePos(normalPosition = 0) {
+		if (Math.abs(normalPosition) > 1) k %= 1; // eslint-disable-line
 
-			// console.log(k);
+		this.state.slides.forEach((slide, index) => {
+			const sign = index % 2 === 0 ? -1 : 1;
+			const zDecrement = index % 2 === 0 ? 0 : 1 / (this.state.slides.length - 0);
 
-			slide.index = slide.index ? slide.index : i; // eslint-disable-line
-			const sign = slide.index % 2 === 0 ? -1 : 1;
-			const zDecrement = slide.index % 2 === 0 ? 0 : 1;
+			const normalIndex = index / (this.state.slides.length - 0);
 
-			// const index = i;
+			let x = sign * (normalIndex + zDecrement) + normalPosition * 2;
 
-			let x = sign * (slide.index + zDecrement) - k * 2;
+			if (x > 1) x -= 2;
+			if (x < -1) x += 2;
 
-			// console.log(x);
-			// console.log(x, slide.index);
-			// if (Math.abs(x) > this.state.slides.length) {
-			// 	const x1 = sign * (slide.index + zDecrement + 1) - k * 2;
-			// 	console.log('should move', x, slide.index, x1);
-			// 	// slide.index += 1; // eslint-disable-line
-			// }
-			if (x > this.state.slides.length) {
-				x = x - this.state.slides.length * 2; // eslint-disable-line
-				// console.log('after:', x);
-				// const x1 = slide.index - sign + zDecrement - k * 2;
-				// console.log(x, slide.index);
-				// slide.index += -k; // eslint-disable-line
-			}
-			if (x < -this.state.slides.length) {
-				x = this.state.slides.length * 2 + x; // eslint-disable-line
-				// console.log('after:', x);
-				// const x1 = slide.index - sign + zDecrement - k * 2;
-				// console.log(x, slide.index);
-				// slide.index += -k; // eslint-disable-line
-			}
-			const z = Math.abs(x) ** 1.1;
+			const z = Math.abs(x) ** 1.3;
 
-			slide.updatePos(x * 100, z * 100);
+			slide.updatePos(x * 100 * this.state.slides.length, z * 100 * this.state.slides.length);
 		});
 	}
 }

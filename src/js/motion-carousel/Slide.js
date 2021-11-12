@@ -23,7 +23,6 @@ export default class Slide {
 		// this.mesh.rotation.set(0, Math.atan(-z / x), 0);
 		// this.mesh.position.y = x ** 2;
 		// console.log(this.mesh.x);
-		console.log(this.mesh.position);
 		this.generalManager.managers.three.scene.add(this.mesh);
 	}
 
