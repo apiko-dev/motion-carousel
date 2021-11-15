@@ -1,6 +1,7 @@
 // import * as THREE from 'three';
 import ThreeManager from './ThreeManager';
 import SlidesManager from './SlidesManager';
+import DragManager from './DragManager';
 
 export default class GeneralManager {
 	constructor(props = {}) {
@@ -20,6 +21,9 @@ export default class GeneralManager {
 			create: [],
 			destroy: [],
 			tick: [],
+			pointerdown: [],
+			pointermove: [],
+			pointerup: [],
 		};
 
 		this.handlers = new Map([
@@ -27,6 +31,9 @@ export default class GeneralManager {
 				window,
 				{
 					resize: this.resize.bind(this),
+					pointerdown: this.pointerdown.bind(this),
+					pointermove: this.pointermove.bind(this),
+					pointerup: this.pointerup.bind(this),
 				},
 			],
 		]);
@@ -34,6 +41,7 @@ export default class GeneralManager {
 		this.managers = {
 			three: new ThreeManager(this),
 			slides: new SlidesManager(this),
+			drag: new DragManager(this),
 		};
 
 		this.create();
@@ -122,6 +130,21 @@ export default class GeneralManager {
 
 		this.eventCallbacks.resize.forEach((callback) => callback(this.width, this.height));
 	}
+
+	pointerdown(event) {
+		this.eventCallbacks.pointerdown.forEach((callback) => callback(event));
+	}
+
+	pointermove(event) {
+		this.eventCallbacks.pointermove.forEach((callback) => callback(event));
+	}
+
+	pointerup(event) {
+		this.eventCallbacks.pointerup.forEach((callback) => callback(event));
+	}
+	// pointerdown(event) {
+	// 	this.eventCallbacks.pointerdown.forEach((callback) => callback(event));
+	// }
 
 	tick() {
 		if (!this.state.isCreated) return;

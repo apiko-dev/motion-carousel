@@ -34,7 +34,7 @@ export default class ThreeManager {
 		this.renderer = new THREE.WebGLRenderer();
 		this.renderer.setSize(this.generalManager.width, this.generalManager.height);
 		this.generalManager.DOM.container.appendChild(this.renderer.domElement);
-		this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
+		// this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
 	}
 
 	get fov() {

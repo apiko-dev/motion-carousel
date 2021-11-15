@@ -1,9 +1,10 @@
 import * as THREE from 'three';
 
 export default class Slide {
-	constructor(generalManager) {
+	constructor(generalManager, id) {
 		this.generalManager = generalManager;
 
+		this.id = id;
 		// this.handlers = {
 		// create: this.create.bind(this),
 		// destroy: this.destroy.bind(this),
@@ -23,10 +24,13 @@ export default class Slide {
 		// this.mesh.rotation.set(0, Math.atan(-z / x), 0);
 		// this.mesh.position.y = x ** 2;
 		// console.log(this.mesh.x);
+		this.mesh.userData.id = this.id;
 		this.generalManager.managers.three.scene.add(this.mesh);
 	}
 
-	updatePos(x, z) {
+	updatePos(x, z, angle) {
 		this.mesh.position.set(x, 0, -z);
+		this.mesh.rotation.set(0, angle, 0);
+		// console.log(this.mesh.rotation);
 	}
 }

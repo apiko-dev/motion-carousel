@@ -10,15 +10,6 @@ function createConfig(env) {
 		env = process.env.NODE_ENV;
 	}
 
-	console.log('11111');
-	console.log('11111');
-	console.log('11111');
-	console.log('11111');
-	console.log('11111');
-	console.log('11111');
-	console.log('11111');
-	console.log(path.resolve(__dirname, '.eslintrc'));
-
 	isProduction = env === 'production';
 
 	webpackConfig = {
