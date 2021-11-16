@@ -57,25 +57,8 @@ export default class SlidesManager {
 	}
 
 	toSlide(toSlideIndex) {
-		const x1 = this.state.slides[this.state.currentSlideIndex].mesh.position.x;
-		const x2 = this.state.slides[toSlideIndex].mesh.position.x;
-
-		if (x1 > x2 && toSlideIndex < this.state.currentSlideIndex) {
-			this.generalManager.state.sliderPosition -=
-				(toSlideIndex - this.state.currentSlideIndex) * this.state.oneSlideLength;
-		}
-		if (x1 > x2 && toSlideIndex > this.state.currentSlideIndex) {
-			this.generalManager.state.sliderPosition -=
-				(toSlideIndex - this.state.currentSlideIndex - this.state.slides.length) * this.state.oneSlideLength;
-		}
-		if (x1 < x2 && toSlideIndex < this.state.currentSlideIndex) {
-			this.generalManager.state.sliderPosition -=
-				(toSlideIndex - this.state.currentSlideIndex + this.state.slides.length) * this.state.oneSlideLength;
-		}
-		if (x1 < x2 && toSlideIndex > this.state.currentSlideIndex) {
-			this.generalManager.state.sliderPosition -=
-				(toSlideIndex - this.state.currentSlideIndex) * this.state.oneSlideLength;
-		}
+		this.generalManager.state.sliderPosition -=
+			this.state.slides[toSlideIndex].mesh.position.x / 200 / this.state.slides.length;
 	}
 
 	updatePos(sliderPosition = 0) {
