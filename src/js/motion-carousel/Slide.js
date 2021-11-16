@@ -5,25 +5,13 @@ export default class Slide {
 		this.generalManager = generalManager;
 
 		this.id = id;
-		// this.handlers = {
-		// create: this.create.bind(this),
-		// destroy: this.destroy.bind(this),
-		// resize: this.resize.bind(this),
-		// tick: this.tick.bind(this),
-		// };
-
-		// this.generalManager.addListener('create', this.handlers.create);
 	}
 
-	create(x, z) {
+	create() {
 		const color = Math.random() * 0xffffff;
 		this.geometry = new THREE.PlaneBufferGeometry(200, 350, 1, 1);
 		this.material = new THREE.MeshBasicMaterial({ color, wireframe: false, side: THREE.DoubleSide });
 		this.mesh = new THREE.Mesh(this.geometry, this.material);
-		// this.mesh.position.set(x, 0, -z);
-		// this.mesh.rotation.set(0, Math.atan(-z / x), 0);
-		// this.mesh.position.y = x ** 2;
-		// console.log(this.mesh.x);
 		this.mesh.userData.id = this.id;
 		this.generalManager.managers.three.scene.add(this.mesh);
 	}
@@ -31,6 +19,5 @@ export default class Slide {
 	updatePos(x, z, angle) {
 		this.mesh.position.set(x, 0, -z);
 		this.mesh.rotation.set(0, angle, 0);
-		// console.log(this.mesh.rotation);
 	}
 }

@@ -6,84 +6,98 @@ export default class SlidesManager {
 
 		this.handlers = {
 			create: this.create.bind(this),
-			// tick: this.tick.bind(this),
+			tick: this.tick.bind(this),
 		};
 
 		this.generalManager.addListener('create', this.handlers.create);
-		// this.generalManager.addListener('tick', this.handlers.tick);
+		this.generalManager.addListener('tick', this.handlers.tick);
 
 		this.state = {
 			normalPosition: 0,
+			oneSlideLength: null,
+			currentSlideIndex: 0,
 			slides: [
-				new Slide(this.generalManager, 0, 0),
-				new Slide(this.generalManager, 1, 1),
-				new Slide(this.generalManager, 2, 4),
-				new Slide(this.generalManager, 3, 2),
-				new Slide(this.generalManager, 4, 3),
+				new Slide(this.generalManager, 0),
+				new Slide(this.generalManager, 1),
+				new Slide(this.generalManager, 2),
+				new Slide(this.generalManager, 3),
+				new Slide(this.generalManager, 4),
 				new Slide(this.generalManager, 5),
 				new Slide(this.generalManager, 6),
 				new Slide(this.generalManager, 7),
 			],
 		};
-
-		window.updatePos = this.updatePos.bind(this);
 	}
 
 	create() {
 		this.state.slides.forEach((slide) => slide.create());
-
+		this.state.oneSlideLength = 1 / this.state.slides.length;
 		this.updatePos();
+		this.updateCurrentSlideIndex();
 	}
 
 	destroy() {
 		this.state.slides.forEach((slide) => slide.destroy());
+		this.state.oneSlideLength = null;
 	}
 
-	updatePos(normalDelta = 0) {
-		this.state.normalPosition = normalDelta;
-		if (Math.abs(this.state.normalPosition) > 1) this.state.normalPosition %= 1; // eslint-disable-line
+	updateCurrentSlideIndex() {
+		const direction = Math.round(-this.generalManager.state.sliderPosition / this.state.oneSlideLength);
 
-		// this.state.slides.forEach((slide, index) => {
-		// 	const sign = index % 2 === 0 ? -1 : 1;
-		// 	const zDecrement = index % 2 === 0 ? 0 : 1 / (this.state.slides.length - 0);
+		if (direction >= 0) {
+			this.state.currentSlideIndex = direction % this.state.slides.length;
+		}
+		if (direction < 0) {
+			this.state.currentSlideIndex =
+				direction + (Math.floor(Math.abs(direction) / (this.state.slides.length + 0.1)) + 1) * this.state.slides.length;
+		}
+		if (!this.generalManager.managers.drag.state.isPointerdown) {
+			this.generalManager.state.sliderPosition = -direction * this.state.oneSlideLength;
+		}
+	}
 
-		// 	const normalIndex = index / (this.state.slides.length - 0);
+	toSlide(toSlideIndex) {
+		const x1 = this.state.slides[this.state.currentSlideIndex].mesh.position.x;
+		const x2 = this.state.slides[toSlideIndex].mesh.position.x;
 
-		// 	let x = sign * (normalIndex + zDecrement) + this.state.normalPosition * 2;
+		if (x1 > x2 && toSlideIndex < this.state.currentSlideIndex) {
+			this.generalManager.state.sliderPosition -=
+				(toSlideIndex - this.state.currentSlideIndex) * this.state.oneSlideLength;
+		}
+		if (x1 > x2 && toSlideIndex > this.state.currentSlideIndex) {
+			this.generalManager.state.sliderPosition -=
+				(toSlideIndex - this.state.currentSlideIndex - this.state.slides.length) * this.state.oneSlideLength;
+		}
+		if (x1 < x2 && toSlideIndex < this.state.currentSlideIndex) {
+			this.generalManager.state.sliderPosition -=
+				(toSlideIndex - this.state.currentSlideIndex + this.state.slides.length) * this.state.oneSlideLength;
+		}
+		if (x1 < x2 && toSlideIndex > this.state.currentSlideIndex) {
+			this.generalManager.state.sliderPosition -=
+				(toSlideIndex - this.state.currentSlideIndex) * this.state.oneSlideLength;
+		}
+	}
 
-		// 	if (x > 1) x -= 2;
-		// 	if (x < -1) x += 2;
+	updatePos(sliderPosition = 0) {
+		this.state.normalPosition = sliderPosition;
+		if (Math.abs(this.state.normalPosition) > 1) this.state.normalPosition %= 1;
 
-		// 	const z = Math.abs(x) ** 1.4;
-
-		// 	const angle = Math.asin(x * 0.8);
-
-		// 	slide.updatePos(x * 100 * this.state.slides.length, z * 100 * this.state.slides.length, angle);
-		// });
-		this.state.oneSlideLength = 1 / this.state.slides.length;
 		this.state.slides.forEach((slide, index) => {
 			let x;
-			// if (this.state.oneSlideLength * index + this.state.normalPosition > 0.5) {
-			// 	x = this.state.oneSlideLength * index + this.state.normalPosition - 1;
-			// } else {
-			x = this.state.oneSlideLength * index + this.state.normalPosition; // eslint-disable-line
-			// }
-			// if (index === 7) {
-			// 	console.log(x);
-			// }
-			// if (x > 1) x -= 1;
+			x = this.state.oneSlideLength * index + this.state.normalPosition;
 			if (x > 0.5) x -= 1;
 			if (x > 0.5) x -= 1;
 			if (x < -0.5) x += 1;
 			if (x < -0.5) x += 1;
-			// if (x < -1) x += 2;
-			// if (x > 0.5) x -= 1;
-			// if (x < -1) x += 2;
 			const z = Math.abs(x) ** 1.2;
 
 			const angle = Math.asin(x * 1.5);
 			slide.updatePos(x * 200 * this.state.slides.length, z * 200 * this.state.slides.length, angle);
-			// console.log(x);
 		});
+	}
+
+	tick() {
+		this.updatePos(this.generalManager.state.sliderPositionEase);
+		this.updateCurrentSlideIndex();
 	}
 }
