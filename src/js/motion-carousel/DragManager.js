@@ -24,16 +24,31 @@ export default class DragManager {
 	}
 
 	pointerdown(event) {
-		if (!event.path.includes(this.generalManager.DOM.container)) return;
+		if (!event.composedPath().includes(this.generalManager.DOM.container)) return;
 
 		this.state.isPointerdown = true;
 		this.state.pointerId = event.pointerId;
+
+		this.generalManager.managers.three.renderer.domElement.style.cursor = this.getIsMouseIntersect()
+			? 'pointer'
+			: 'grabbing';
 
 		this.state.startX = event.clientX / this.generalManager.width - this.generalManager.state.sliderPositionEase;
 		this.state.startXCleared = event.clientX / this.generalManager.width;
 	}
 
 	pointermove(event) {
+		this.state.mouse.x = (event.clientX / this.generalManager.width) * 2 - 1;
+		this.state.mouse.y = -(event.clientY / this.generalManager.height) * 2 + 1;
+
+		if (this.state.isMoved || (!this.getIsMouseIntersect() && this.state.isPointerdown)) {
+			this.generalManager.managers.three.renderer.domElement.style.cursor = 'grabbing';
+		} else if (this.getIsMouseIntersect()) {
+			this.generalManager.managers.three.renderer.domElement.style.cursor = 'pointer';
+		} else {
+			this.generalManager.managers.three.renderer.domElement.style.cursor = 'grab';
+		}
+
 		if (!this.state.isPointerdown || this.state.pointerId !== event.pointerId) return;
 
 		const delta = Math.abs(event.clientX / this.generalManager.width - this.state.startXCleared);
@@ -60,15 +75,26 @@ export default class DragManager {
 			this.generalManager.stopDrag();
 		}
 
+		this.generalManager.managers.three.renderer.domElement.style.cursor = this.getIsMouseIntersect()
+			? 'pointer'
+			: 'grab';
+
 		this.state.isPointerdown = false;
 		this.state.pointerId = null;
 		this.state.startX = 0;
 		this.state.isMoved = false;
 	}
 
+	getIsMouseIntersect() {
+		this.state.raycaster.setFromCamera(this.state.mouse, this.generalManager.managers.three.camera);
+		const intersects = this.state.raycaster.intersectObjects(this.generalManager.managers.three.scene.children);
+		return intersects[0] && intersects[0].object.isMesh && intersects[0].object.userData.id !== undefined;
+	}
+
 	click() {
 		this.state.raycaster.setFromCamera(this.state.mouse, this.generalManager.managers.three.camera);
 		const intersects = this.state.raycaster.intersectObjects(this.generalManager.managers.three.scene.children);
-		if (intersects[0] && intersects[0].object.isMesh) this.generalManager.slideClick(intersects[0].object.userData.id);
+		if (intersects[0] && intersects[0].object.isMesh && intersects[0].object.userData.id !== undefined)
+			this.generalManager.slideClick(intersects[0].object.userData.id);
 	}
 }

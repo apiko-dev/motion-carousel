@@ -33,6 +33,7 @@ export default class ThreeManager {
 		this.renderer = new THREE.WebGLRenderer();
 		this.renderer.setSize(this.generalManager.width, this.generalManager.height);
 		this.generalManager.DOM.container.appendChild(this.renderer.domElement);
+		this.renderer.domElement.style.touchAction = 'none';
 	}
 
 	get fov() {
