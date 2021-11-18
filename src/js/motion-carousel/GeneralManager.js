@@ -1,12 +1,80 @@
 import ThreeManager from './ThreeManager';
 import SlidesManager from './SlidesManager';
 import DragManager from './DragManager';
+import LoadingManager from './LoadingManager';
 
 export default class GeneralManager {
 	constructor(props = {}) {
 		this.DOM = {
 			container: props.container,
 		};
+
+		this.slides = [
+			{
+				images: {
+					bg: { src: 'img/0.jpg', img: null },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/1.jpg', img: null },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/2.jpg', img: null },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/3.jpg', img: null },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/4.jpg', img: null },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/5.jpg', img: null },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/6.jpg', img: null },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/7.jpg', img: null },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+		];
 
 		this.state = {
 			isCreated: false,
@@ -28,6 +96,8 @@ export default class GeneralManager {
 			startDrag: [],
 			stopDrag: [],
 			slideClick: [],
+			progress: [],
+			load: [],
 		};
 
 		this.handlers = new Map([
@@ -46,6 +116,7 @@ export default class GeneralManager {
 			three: new ThreeManager(this),
 			slides: new SlidesManager(this),
 			drag: new DragManager(this),
+			loading: new LoadingManager(this),
 		};
 
 		this.create();
@@ -164,6 +235,16 @@ export default class GeneralManager {
 		this.managers.slides.toSlide(index);
 
 		this.eventCallbacks.slideClick.forEach((callback) => callback(index));
+	}
+
+	progress(progress, slideInfo) {
+		if (slideInfo.images.bg.img) slideInfo.slideManager.updateTexture(slideInfo.images.bg.img);
+
+		this.eventCallbacks.progress.forEach((callback) => callback(progress));
+	}
+
+	load() {
+		this.eventCallbacks.load.forEach((callback) => callback());
 	}
 
 	tick() {

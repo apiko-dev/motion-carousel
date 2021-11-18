@@ -16,28 +16,23 @@ export default class SlidesManager {
 			normalPosition: 0,
 			oneSlideLength: null,
 			currentSlideIndex: 0,
-			slides: [
-				new Slide(this.generalManager, 0),
-				new Slide(this.generalManager, 1),
-				new Slide(this.generalManager, 2),
-				new Slide(this.generalManager, 3),
-				new Slide(this.generalManager, 4),
-				new Slide(this.generalManager, 5),
-				new Slide(this.generalManager, 6),
-				new Slide(this.generalManager, 7),
-			],
 		};
+
+		this.generalManager.slides.forEach((slide, index) => {
+			slide.slideManager = new Slide(this.generalManager, index); //eslint-disable-line
+			slide.originalIndex = index; //eslint-disable-line
+		});
 	}
 
 	create() {
-		this.state.slides.forEach((slide) => slide.create());
-		this.state.oneSlideLength = 1 / this.state.slides.length;
+		this.generalManager.slides.forEach((slide) => slide.slideManager.create());
+		this.state.oneSlideLength = 1 / this.generalManager.slides.length;
 		this.updatePos();
 		this.updateCurrentSlideIndex();
 	}
 
 	destroy() {
-		this.state.slides.forEach((slide) => slide.destroy());
+		this.generalManager.slides.forEach((slide) => slide.slideManager.destroy());
 		this.state.oneSlideLength = null;
 	}
 
@@ -45,11 +40,13 @@ export default class SlidesManager {
 		const direction = Math.round(-this.generalManager.state.sliderPosition / this.state.oneSlideLength);
 
 		if (direction >= 0) {
-			this.state.currentSlideIndex = direction % this.state.slides.length;
+			this.state.currentSlideIndex = direction % this.generalManager.slides.length;
 		}
 		if (direction < 0) {
 			this.state.currentSlideIndex =
-				direction + (Math.floor(Math.abs(direction) / (this.state.slides.length + 0.1)) + 1) * this.state.slides.length;
+				direction +
+				(Math.floor(Math.abs(direction) / (this.generalManager.slides.length + 0.1)) + 1) *
+					this.generalManager.slides.length;
 		}
 		if (!this.generalManager.managers.drag.state.isPointerdown) {
 			this.generalManager.state.sliderPosition = -direction * this.state.oneSlideLength;
@@ -58,14 +55,16 @@ export default class SlidesManager {
 
 	toSlide(toSlideIndex) {
 		this.generalManager.state.sliderPosition -=
-			this.state.slides[toSlideIndex].mesh.position.x / 200 / this.state.slides.length;
+			this.generalManager.slides[toSlideIndex].slideManager.mesh.position.x / 200 / this.generalManager.slides.length;
 	}
 
 	updatePos(sliderPosition = 0) {
 		this.state.normalPosition = sliderPosition;
 		if (Math.abs(this.state.normalPosition) > 1) this.state.normalPosition %= 1;
 
-		this.state.slides.forEach((slide, index) => {
+		this.generalManager.slides.forEach(({ slideManager }, index) => {
+			if (!slideManager) return;
+
 			let x;
 			x = this.state.oneSlideLength * index + this.state.normalPosition;
 			if (x > 0.5) x -= 1;
@@ -75,7 +74,11 @@ export default class SlidesManager {
 			const z = Math.abs(x) ** 1.2;
 
 			const angle = Math.asin(x * 1.5);
-			slide.updatePos(x * 200 * this.state.slides.length, z * 200 * this.state.slides.length, angle);
+			slideManager.updatePos(
+				x * 200 * this.generalManager.slides.length,
+				z * 200 * this.generalManager.slides.length,
+				angle
+			);
 		});
 	}
 
