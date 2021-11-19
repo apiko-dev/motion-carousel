@@ -16,27 +16,29 @@ export default class LoadingManager {
 		this.loadByIndex();
 	}
 
-	loadByIndex(index = 0) {
+	loadByIndex(originalIndex = 0) {
+		if (originalIndex === this.generalManager.slides.length) return;
+		const index = this.generalManager.slides.filter((slide) => slide.originalIndex === originalIndex)[0].shadowIndex;
 		const slideInfo = this.generalManager.slides[index];
 		if (!slideInfo) return;
 
 		Object.entries(slideInfo.images).forEach(([type, { src }]) => {
 			const img = new Image();
-			img.onload = this.loadSuccess.bind(this, index, type);
+			img.onload = this.loadSuccess.bind(this, index, type, img);
 			img.onerror = this.loadError.bind(this, index);
 			img.src = src;
 		});
 	}
 
-	loadSuccess(index, key, { path }) {
+	loadSuccess(index, key, img) {
 		this.loadedNumber += 1;
-		this.generalManager.slides[index].images[key].img = path[0]; //eslint-disable-line
+		this.generalManager.slides[index].images[key].img = img; //eslint-disable-line
 		this.progress = this.loadedNumber / this.imgNumber;
 
 		this.generalManager.progress(this.progress, this.generalManager.slides[index]);
 		if (this.progress === 1) this.generalManager.load();
 
-		this.loadByIndex(index + 1);
+		this.loadByIndex(this.generalManager.slides[index].originalIndex + 1);
 	}
 
 	loadError(index) {
@@ -46,6 +48,6 @@ export default class LoadingManager {
 		this.generalManager.progress(this.progress, this.generalManager.slides[index]);
 		if (this.progress === 1) this.generalManager.load();
 
-		this.loadByIndex(index + 1);
+		this.loadByIndex(this.generalManager.slides[index].originalIndex + 1);
 	}
 }

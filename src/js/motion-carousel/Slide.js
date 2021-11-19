@@ -4,10 +4,11 @@ import slidebgVertex from './shaders/slidebgVertex.glsl';
 import slidebgFragment from './shaders/slidebgFragment.glsl';
 
 export default class Slide {
-	constructor(generalManager, id) {
+	constructor(generalManager, id, originalId) {
 		this.generalManager = generalManager;
 
 		this.id = id;
+		this.originalId = originalId;
 	}
 
 	create() {
@@ -22,6 +23,7 @@ export default class Slide {
 
 		this.mesh = new THREE.Mesh(this.geometry, this.material);
 		this.mesh.userData.id = this.id;
+		this.mesh.userData.originalId = this.originalId;
 		this.generalManager.managers.three.scene.add(this.mesh);
 
 		this.shadowGeometry = new THREE.PlaneBufferGeometry(200, 250, 1, 1);

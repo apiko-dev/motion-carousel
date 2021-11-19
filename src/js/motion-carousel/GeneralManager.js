@@ -115,13 +115,14 @@ export default class GeneralManager {
 		this.managers = {
 			three: new ThreeManager(this),
 			slides: new SlidesManager(this),
-			drag: new DragManager(this),
 			loading: new LoadingManager(this),
+			drag: new DragManager(this),
 		};
 
 		this.create();
 		window.create = this.create.bind(this);
 		window.destroy = this.destroy.bind(this);
+		window.toSlide = this.toSlide.bind(this);
 	}
 
 	create() {
@@ -231,10 +232,20 @@ export default class GeneralManager {
 		this.eventCallbacks.stopDrag.forEach((callback) => callback(this.currentSlideIndex));
 	}
 
-	slideClick(index) {
-		this.managers.slides.toSlide(index);
+	slideClick(shadowIndex) {
+		this.managers.slides.toSlide(shadowIndex);
 
-		this.eventCallbacks.slideClick.forEach((callback) => callback(index));
+		this.eventCallbacks.slideClick.forEach((callback) => callback(this.slides[shadowIndex].originalIndex));
+	}
+
+	toSlide(originalIndex, fast) {
+		if (originalIndex >= this.slides.length || originalIndex < 0) {
+			console.error(`The slide by index ${originalIndex} is not exists`); // eslint-disable-line
+			return;
+		}
+		const index = this.slides.filter((slide) => slide.originalIndex === originalIndex)[0].shadowIndex;
+
+		this.managers.slides.toSlide(index, fast);
 	}
 
 	progress(progress, slideInfo) {

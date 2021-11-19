@@ -18,9 +18,23 @@ export default class SlidesManager {
 			currentSlideIndex: 0,
 		};
 
+		const arrays = this.generalManager.slides.reduce(
+			(acc, slide, index) => {
+				slide.originalIndex = index; //eslint-disable-line
+				if (index % 2 === 0 && index !== 0) {
+					acc[1].push(slide);
+				} else {
+					acc[0].push(slide);
+				}
+				return acc;
+			},
+			[[], []]
+		);
+		this.generalManager.slides = [...arrays[0], ...arrays[1].reverse()];
+
 		this.generalManager.slides.forEach((slide, index) => {
-			slide.slideManager = new Slide(this.generalManager, index); //eslint-disable-line
-			slide.originalIndex = index; //eslint-disable-line
+			slide.slideManager = new Slide(this.generalManager, index, slide.originalIndex); //eslint-disable-line
+			slide.shadowIndex = index; //eslint-disable-line
 		});
 	}
 
@@ -53,9 +67,11 @@ export default class SlidesManager {
 		}
 	}
 
-	toSlide(toSlideIndex) {
+	toSlide(toSlideIndex, fast) {
 		this.generalManager.state.sliderPosition -=
 			this.generalManager.slides[toSlideIndex].slideManager.mesh.position.x / 200 / this.generalManager.slides.length;
+
+		if (fast) this.generalManager.state.sliderPositionEase = this.generalManager.state.sliderPosition;
 	}
 
 	updatePos(sliderPosition = 0) {

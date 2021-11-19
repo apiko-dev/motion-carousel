@@ -7,7 +7,8 @@ export default class DragManager {
 		this.state = {
 			isPointerdown: false,
 			pointerId: null,
-			startX: 0,
+			normalStartX: 0,
+			normalStartXCleared: 0,
 			raycaster: new THREE.Raycaster(),
 			mouse: new THREE.Vector2(Infinity, Infinity),
 		};
@@ -33,13 +34,13 @@ export default class DragManager {
 			? 'pointer'
 			: 'grabbing';
 
-		this.state.startX = event.clientX / this.generalManager.width - this.generalManager.state.sliderPositionEase;
-		this.state.startXCleared = event.clientX / this.generalManager.width;
+		this.state.normalStartX = event.pageX / this.generalManager.width - this.generalManager.state.sliderPositionEase;
+		this.state.normalStartXCleared = event.pageX / this.generalManager.width;
 	}
 
 	pointermove(event) {
-		this.state.mouse.x = (event.clientX / this.generalManager.width) * 2 - 1;
-		this.state.mouse.y = -(event.clientY / this.generalManager.height) * 2 + 1;
+		this.state.mouse.x = (event.pageX / this.generalManager.width) * 2 - 1;
+		this.state.mouse.y = -(event.pageY / this.generalManager.height) * 2 + 1;
 
 		if (this.state.isMoved || (!this.getIsMouseIntersect() && this.state.isPointerdown)) {
 			this.generalManager.managers.three.renderer.domElement.style.cursor = 'grabbing';
@@ -51,7 +52,7 @@ export default class DragManager {
 
 		if (!this.state.isPointerdown || this.state.pointerId !== event.pointerId) return;
 
-		const delta = Math.abs(event.clientX / this.generalManager.width - this.state.startXCleared);
+		const delta = Math.abs(event.pageX / this.generalManager.width - this.state.normalStartXCleared);
 
 		if (delta > 0.01) {
 			if (this.state.isMoved !== delta > 0.01) {
@@ -59,15 +60,15 @@ export default class DragManager {
 				this.generalManager.startDrag();
 			}
 
-			this.generalManager.state.sliderPosition = event.clientX / this.generalManager.width - this.state.startX;
+			this.generalManager.state.sliderPosition = event.pageX / this.generalManager.width - this.state.normalStartX;
 		}
 	}
 
 	pointerup(event) {
 		if (!this.state.isPointerdown || this.state.pointerId !== event.pointerId) return;
 
-		this.state.mouse.x = (event.clientX / this.generalManager.width) * 2 - 1;
-		this.state.mouse.y = -(event.clientY / this.generalManager.height) * 2 + 1;
+		this.state.mouse.x = (event.pageX / this.generalManager.width) * 2 - 1;
+		this.state.mouse.y = -(event.pageY / this.generalManager.height) * 2 + 1;
 
 		if (!this.state.isMoved) this.click();
 
@@ -81,19 +82,22 @@ export default class DragManager {
 
 		this.state.isPointerdown = false;
 		this.state.pointerId = null;
-		this.state.startX = 0;
+		this.state.normalStartX = 0;
 		this.state.isMoved = false;
 	}
 
-	getIsMouseIntersect() {
+	getIntersects() {
 		this.state.raycaster.setFromCamera(this.state.mouse, this.generalManager.managers.three.camera);
-		const intersects = this.state.raycaster.intersectObjects(this.generalManager.managers.three.scene.children);
+		return this.state.raycaster.intersectObjects(this.generalManager.managers.three.scene.children);
+	}
+
+	getIsMouseIntersect() {
+		const intersects = this.getIntersects();
 		return intersects[0] && intersects[0].object.isMesh && intersects[0].object.userData.id !== undefined;
 	}
 
 	click() {
-		this.state.raycaster.setFromCamera(this.state.mouse, this.generalManager.managers.three.camera);
-		const intersects = this.state.raycaster.intersectObjects(this.generalManager.managers.three.scene.children);
+		const intersects = this.getIntersects();
 		if (intersects[0] && intersects[0].object.isMesh && intersects[0].object.userData.id !== undefined)
 			this.generalManager.slideClick(intersects[0].object.userData.id);
 	}
