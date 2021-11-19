@@ -1,4 +1,4 @@
-https://6197a6ac85de1a006f847908--motion-carousel.netlify.app/
+https://6197aa4895728e0c98180582--motion-carousel.netlify.app
 
 #How to use
 

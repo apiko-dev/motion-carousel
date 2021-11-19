@@ -30,10 +30,11 @@ export default class ThreeManager {
 			10000
 		);
 		this.camera.position.z = this.setings.cameraPositionZ;
-		this.renderer = new THREE.WebGLRenderer();
+		this.renderer = new THREE.WebGLRenderer({ alpha: true });
 		this.renderer.setSize(this.generalManager.width, this.generalManager.height);
 		this.generalManager.DOM.container.appendChild(this.renderer.domElement);
 		this.renderer.domElement.style.touchAction = 'pan-y';
+		this.renderer.setClearColor(0x000000, 0);
 	}
 
 	get fov() {

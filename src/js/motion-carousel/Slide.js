@@ -27,7 +27,13 @@ export default class Slide {
 		this.generalManager.managers.three.scene.add(this.mesh);
 
 		this.shadowGeometry = new THREE.PlaneBufferGeometry(200, 250, 1, 1);
-		this.shadowMaterial = new THREE.MeshBasicMaterial({ color: 0x333333, wireframe: false, side: THREE.DoubleSide });
+		this.shadowMaterial = new THREE.MeshBasicMaterial({
+			color: 0x000000,
+			wireframe: false,
+			side: THREE.DoubleSide,
+			opacity: 0.1,
+			transparent: true,
+		});
 		this.shadowMesh = new THREE.Mesh(this.shadowGeometry, this.shadowMaterial);
 		this.generalManager.managers.three.scene.add(this.shadowMesh);
 		this.shadowMesh.rotation.set(90 / (180 / Math.PI), 0, 0);
