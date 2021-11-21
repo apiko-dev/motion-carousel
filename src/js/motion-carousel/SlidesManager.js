@@ -54,16 +54,17 @@ export default class SlidesManager {
 
 	updateCurrentSlideIndex() {
 		const direction = Math.round(-this.generalManager.state.sliderPositionEase / this.state.oneSlideLength);
-
+		// console.log(direction);
 		if (direction >= 0) {
 			this.state.currentSlideIndex = direction % this.generalManager.slides.length;
 		}
 		if (direction < 0) {
 			this.state.currentSlideIndex =
 				direction +
-				(Math.floor(Math.abs(direction) / (this.generalManager.slides.length + 0.1)) + 1) *
+				(Math.floor(Math.abs(direction) / (this.generalManager.slides.length + 0.001)) + 1) *
 					this.generalManager.slides.length;
 		}
+		// console.log(this.state.currentSlideIndex, direction);
 		// if (!this.generalManager.managers.drag.state.isPointerdown) {
 		// 	this.generalManager.state.sliderPosition = -direction * this.state.oneSlideLength;
 		// }

@@ -198,7 +198,7 @@ export default class GeneralManager {
 	}
 
 	get currentSlideIndex() {
-		console.log('currentSlideIndex');
+		console.log('currentSlideIndex', this.managers.slides.state.currentSlideIndex);
 		return this.slides[this.managers.slides.state.currentSlideIndex].originalIndex;
 	}
 

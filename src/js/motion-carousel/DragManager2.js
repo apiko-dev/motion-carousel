@@ -52,6 +52,7 @@ export default class DragManager {
 
 		// this.state.isPointerdown = true;
 		// this.state.pointerId = event.pointerId;
+		this.state.direction = null;
 
 		this.generalManager.managers.three.renderer.domElement.style.cursor = this.getIsMouseIntersect()
 			? 'pointer'
@@ -67,6 +68,7 @@ export default class DragManager {
 		this.state.y2 = event.pageY;
 
 		if (this.state.isPointerdown) {
+			console.log(this.state.x0, this.state.x2);
 			this.state.isMoved = Math.abs(this.state.x0 - this.state.x2) > 1;
 			// console.log(this.state.x2, this.state.x1);
 			// console.log(this.state.y2, this.state.y1);
@@ -139,14 +141,15 @@ export default class DragManager {
 		// console.log('pointerup');
 		this.state.isPointerdown = false;
 		this.state.tmpIsPointerdown = false;
-		this.state.direction = null;
+
 		// if (!this.state.isPointerdown || this.state.pointerId !== event.pointerId) return;
 
 		this.state.mouse.x = (event.pageX / this.generalManager.width) * 2 - 1;
 		this.state.mouse.y = -(event.pageY / this.generalManager.height) * 2 + 1;
 		// this.state.isMoved = Math.abs(this.state.x0 - event.pageX) > 1;
-
-		if (!this.state.isMoved) this.click();
+		// console.log('this.state.isMoved', this.state.isMoved);
+		// console.log('this.state.direction', this.state.direction);
+		if (!this.state.isMoved && (this.state.direction !== 'v' || event.pointerType !== 'touch')) this.click();
 
 		// if (this.state.isMoved) {
 		// 	this.generalManager.stopDrag();
@@ -167,15 +170,20 @@ export default class DragManager {
 
 	tick() {
 		// console.log(Math.abs(this.state.x2 - this.state.x1) > Math.abs(this.state.y2 - this.state.y1));
+		// console.log(this.state.isPointerdown);
 		if (this.state.isPointerdown && Math.abs(this.state.x2 - this.state.x1) > Math.abs(this.state.y2 - this.state.y1)) {
 			this.state.delta = this.state.x2 - this.state.x1;
+
 			// this.state.deltaY = this.state.y1 - this.state.y0;
 
 			if (this.state.timeline) this.state.timeline.pause();
 			// console.log({ x2: this.state.x2, x1: this.state.x1, delta: this.state.delta });
-		} else {
+		} else if (!this.state.isPointerdown || (this.state.isPointerdown && this.state.direction !== 'h')) {
 			this.state.delta *= 0.95;
+		} else {
+			this.state.delta = 0;
 		}
+		// console.log(this.state.delta);
 
 		if (Math.abs(+this.state.delta.toFixed(1)) <= 0.5 && !this.state.isPointerdown) {
 			this.state.isStop = true;
