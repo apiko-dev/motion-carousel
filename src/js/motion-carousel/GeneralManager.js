@@ -1,6 +1,6 @@
 import ThreeManager from './ThreeManager';
 import SlidesManager from './SlidesManager';
-import DragManager from './DragManager';
+import DragManager from './DragManager2';
 import LoadingManager from './LoadingManager';
 
 export default class GeneralManager {
@@ -66,14 +66,14 @@ export default class GeneralManager {
 				shadowIndex: null,
 				slideManager: null,
 			},
-			{
-				images: {
-					bg: { src: 'img/7.jpg', img: null },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
+			// {
+			// 	images: {
+			// 		bg: { src: 'img/7.jpg', img: null },
+			// 	},
+			// 	originalIndex: null,
+			// 	shadowIndex: null,
+			// 	slideManager: null,
+			// },
 		];
 
 		this.state = {
@@ -198,6 +198,11 @@ export default class GeneralManager {
 	}
 
 	get currentSlideIndex() {
+		console.log('currentSlideIndex');
+		return this.slides[this.managers.slides.state.currentSlideIndex].originalIndex;
+	}
+
+	get currentSlideShadowIndex() {
 		return this.managers.slides.state.currentSlideIndex;
 	}
 
@@ -263,7 +268,7 @@ export default class GeneralManager {
 
 		this.state.time += 1;
 
-		this.state.sliderPositionEase += 0.05 * (this.state.sliderPosition - this.state.sliderPositionEase);
+		// this.state.sliderPositionEase += 0.05 * (this.state.sliderPosition - this.state.sliderPositionEase);
 
 		this.eventCallbacks.tick.forEach((callback) => callback(this.state.time));
 

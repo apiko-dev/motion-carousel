@@ -1,3 +1,5 @@
+import { gsap, Power3 } from 'gsap';
+
 import Slide from './Slide';
 
 export default class SlidesManager {
@@ -51,7 +53,7 @@ export default class SlidesManager {
 	}
 
 	updateCurrentSlideIndex() {
-		const direction = Math.round(-this.generalManager.state.sliderPosition / this.state.oneSlideLength);
+		const direction = Math.round(-this.generalManager.state.sliderPositionEase / this.state.oneSlideLength);
 
 		if (direction >= 0) {
 			this.state.currentSlideIndex = direction % this.generalManager.slides.length;
@@ -62,14 +64,19 @@ export default class SlidesManager {
 				(Math.floor(Math.abs(direction) / (this.generalManager.slides.length + 0.1)) + 1) *
 					this.generalManager.slides.length;
 		}
-		if (!this.generalManager.managers.drag.state.isPointerdown) {
-			this.generalManager.state.sliderPosition = -direction * this.state.oneSlideLength;
-		}
+		// if (!this.generalManager.managers.drag.state.isPointerdown) {
+		// 	this.generalManager.state.sliderPosition = -direction * this.state.oneSlideLength;
+		// }
 	}
 
 	toSlide(toSlideIndex, fast) {
-		this.generalManager.state.sliderPosition -=
+		const x =
+			this.generalManager.state.sliderPositionEase -
 			this.generalManager.slides[toSlideIndex].slideManager.mesh.position.x / 200 / this.generalManager.slides.length;
+		const duration = 0.3;
+		gsap.to(this.generalManager.state, { sliderPositionEase: x, duration, ease: Power3.easeInOut });
+		// this.generalManager.state.sliderPosition -=
+		// 	this.generalManager.slides[toSlideIndex].slideManager.mesh.position.x / 200 / this.generalManager.slides.length;
 
 		if (fast) this.generalManager.state.sliderPositionEase = this.generalManager.state.sliderPosition;
 	}
