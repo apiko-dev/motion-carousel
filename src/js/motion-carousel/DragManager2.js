@@ -139,14 +139,18 @@ export default class DragManager {
 	}
 
 	tick() {
-		if (this.state.isPointerdown && Math.abs(this.state.x2 - this.state.x1) > Math.abs(this.state.y2 - this.state.y1)) {
-			this.state.delta = this.state.x2 - this.state.x1;
+		const isDeltaXMoreDeltaY = Math.abs(this.state.x2 - this.state.x1) > Math.abs(this.state.y2 - this.state.y1);
 
-			if (this.generalManager.state.timelinePosition) this.generalManager.state.timelinePosition.pause();
+		if (this.state.isPointerdown && isDeltaXMoreDeltaY) {
+			this.state.delta = this.state.x2 - this.state.x1;
 		} else if (!this.state.isPointerdown || (this.state.isPointerdown && this.state.direction !== 'h')) {
 			this.state.delta *= 0.95;
 		} else {
 			this.state.delta = 0;
+		}
+
+		if (this.state.isPointerdown && isDeltaXMoreDeltaY && this.generalManager.state.timelinePosition) {
+			this.generalManager.state.timelinePosition.pause();
 		}
 
 		if (Math.abs(+this.state.delta.toFixed(1)) <= 0.5 && !this.state.isPointerdown) {
