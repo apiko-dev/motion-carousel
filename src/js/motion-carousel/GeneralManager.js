@@ -1,6 +1,6 @@
 import ThreeManager from './ThreeManager';
 import SlidesManager from './SlidesManager';
-import DragManager from './DragManager2';
+import DragManager from './DragManager';
 import LoadingManager from './LoadingManager';
 
 export default class GeneralManager {
