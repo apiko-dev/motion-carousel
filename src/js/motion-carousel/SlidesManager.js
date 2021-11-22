@@ -71,11 +71,14 @@ export default class SlidesManager {
 	}
 
 	toSlide(toSlideIndex, fast) {
+		if (this.generalManager.state.timelinePosition) this.generalManager.state.timelinePosition.pause();
 		const x =
 			this.generalManager.state.sliderPositionEase -
 			this.generalManager.slides[toSlideIndex].slideManager.mesh.position.x / 200 / this.generalManager.slides.length;
 		const duration = 0.3;
-		gsap.to(this.generalManager.state, { sliderPositionEase: x, duration, ease: Power3.easeInOut });
+		this.generalManager.state.timelinePosition = gsap
+			.timeline()
+			.to(this.generalManager.state, { sliderPositionEase: x, duration, ease: Power3.easeInOut });
 		// this.generalManager.state.sliderPosition -=
 		// 	this.generalManager.slides[toSlideIndex].slideManager.mesh.position.x / 200 / this.generalManager.slides.length;
 

@@ -83,6 +83,7 @@ export default class GeneralManager {
 			time: null,
 			sliderPosition: null,
 			sliderPositionEase: null,
+			timelinePosition: null,
 		};
 
 		this.eventCallbacks = {
