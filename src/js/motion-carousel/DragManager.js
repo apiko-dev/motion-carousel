@@ -90,7 +90,7 @@ export default class DragManager {
 			this.state.direction = this.state.direction ? this.state.direction : 'v';
 		}
 
-		if (this.state.isPointerdown && !isDeltaYMoreDeltaX) {
+		if (this.state.isPointerdown && !isDeltaYMoreDeltaX && this.state.isMovedX) {
 			this.state.direction = this.state.direction ? this.state.direction : 'h';
 		}
 

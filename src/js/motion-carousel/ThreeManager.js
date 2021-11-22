@@ -35,6 +35,9 @@ export default class ThreeManager {
 		this.renderer.setPixelRatio(2);
 		this.generalManager.DOM.container.appendChild(this.renderer.domElement);
 		this.renderer.domElement.style.touchAction = 'pan-y';
+		this.renderer.domElement.style.userSelect = 'none';
+		this.generalManager.DOM.container.style.webkitUserSelect = 'none';
+		this.generalManager.DOM.container.style.userSelect = 'none';
 		this.renderer.setClearColor(0x000000, 0);
 	}
 
