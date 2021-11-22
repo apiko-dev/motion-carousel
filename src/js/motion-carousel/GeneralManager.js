@@ -199,8 +199,7 @@ export default class GeneralManager {
 	}
 
 	get currentSlideIndex() {
-		console.log('currentSlideIndex', this.managers.slides.state.currentSlideIndex);
-		return this.slides[this.managers.slides.state.currentSlideIndex].originalIndex;
+		return Math.abs(this.slides[this.managers.slides.state.currentSlideIndex].originalIndex);
 	}
 
 	get currentSlideShadowIndex() {
@@ -231,7 +230,7 @@ export default class GeneralManager {
 	}
 
 	startDrag() {
-		this.eventCallbacks.startDrag.forEach((callback) => callback());
+		this.eventCallbacks.startDrag.forEach((callback) => callback(this.currentSlideIndex));
 	}
 
 	stopDrag() {

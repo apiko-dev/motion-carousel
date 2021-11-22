@@ -50,6 +50,9 @@ export default class DragManager {
 		this.state.isClicked = false;
 		this.state.direction = null;
 
+		this.state.isMovedX = false;
+		this.state.isMovedY = false;
+
 		this.state.x0 = event.pageX;
 		this.state.x1 = event.pageX;
 		this.state.x2 = event.pageX;
@@ -63,43 +66,58 @@ export default class DragManager {
 		this.state.x2 = event.pageX;
 		this.state.y2 = event.pageY;
 
+		this.state.mouse.x = (event.pageX / this.generalManager.width) * 2 - 1;
+		this.state.mouse.y = -(event.pageY / this.generalManager.height) * 2 + 1;
+
+		const deltaX = this.state.x2 - this.state.x1;
+		const deltaY = this.state.y2 - this.state.y1;
+		const isDeltaYMoreDeltaX = Math.abs(deltaX) < Math.abs(deltaY);
+
 		if (this.state.isPointerdown) {
-			console.log('move');
 			this.state.isMovedX = Math.abs(this.state.x0 - this.state.x2) > 1;
 			this.state.isMovedY = Math.abs(this.state.y0 - this.state.y2) > 1;
-
-			if (Math.abs(this.state.x2 - this.state.x1) < Math.abs(this.state.y2 - this.state.y1)) {
-				this.state.direction = this.state.direction ? this.state.direction : 'v';
-
-				if (this.state.direction === 'v' && event.pointerType === 'touch') {
-					this.pointerup(event);
-				}
-			} else {
-				this.state.direction = this.state.direction ? this.state.direction : 'h';
-			}
 		}
 
-		this.state.y1 = this.state.y2;
+		if (this.state.isPointerdown && isDeltaYMoreDeltaX) {
+			this.state.direction = this.state.direction ? this.state.direction : 'v';
+		}
+
+		if (this.state.isPointerdown && !isDeltaYMoreDeltaX) {
+			this.state.direction = this.state.direction ? this.state.direction : 'h';
+		}
+
+		if (
+			this.state.isPointerdown &&
+			isDeltaYMoreDeltaX &&
+			this.state.direction === 'v' &&
+			event.pointerType === 'touch'
+		) {
+			this.pointerup(event);
+			console.log('OTMENA');
+		}
+
+		if (this.state.tmpIsPointerdown !== this.state.isPointerdown && Math.abs(this.state.x0 - this.state.x2) > 0) {
+			this.generalManager.startDrag();
+		}
 
 		if (this.state.tmpIsPointerdown !== this.state.isPointerdown) {
 			this.state.tmpIsPointerdown = this.state.isPointerdown;
-
 			this.state.x1 = this.state.x2;
-			this.state.y1 = this.state.y2;
-			if (Math.abs(this.state.x0 - this.state.x2) > 0) {
-				this.generalManager.startDrag();
-			}
 		}
 
-		this.state.mouse.x = (event.pageX / this.generalManager.width) * 2 - 1;
-		this.state.mouse.y = -(event.pageY / this.generalManager.height) * 2 + 1;
-		if (this.state.isMovedX || (!this.getIsMouseIntersect() && this.state.isPointerdown)) {
+		if (this.state.isMoved || (!this.getIsMouseIntersect() && this.state.isPointerdown)) {
 			this.generalManager.managers.three.renderer.domElement.style.cursor = 'grabbing';
-		} else if (this.getIsMouseIntersect()) {
+		}
+
+		if (this.getIsMouseIntersect() && !this.state.isPointerdown) {
 			this.generalManager.managers.three.renderer.domElement.style.cursor = 'pointer';
-		} else {
+		}
+
+		if (!this.getIsMouseIntersect() && !this.state.isPointerdown) {
 			this.generalManager.managers.three.renderer.domElement.style.cursor = 'grab';
 		}
+
+		this.state.y1 = this.state.y2;
 	}
 
 	pointerup(event) {
@@ -111,6 +129,7 @@ export default class DragManager {
 		this.state.mouse.y = -(event.pageY / this.generalManager.height) * 2 + 1;
 		if (
 			!this.state.isMovedX &&
+			!this.state.isClicked &&
 			// && (this.state.direction !== 'v' || event.pointerType !== 'touch')
 			!this.state.isMovedY
 		) {
