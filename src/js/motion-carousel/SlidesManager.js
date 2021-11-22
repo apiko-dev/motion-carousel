@@ -54,7 +54,6 @@ export default class SlidesManager {
 
 	updateCurrentSlideIndex() {
 		const direction = Math.round(-this.generalManager.state.sliderPositionEase / this.state.oneSlideLength);
-		// console.log(direction);
 		if (direction >= 0) {
 			this.state.currentSlideIndex = direction % this.generalManager.slides.length;
 		}
@@ -64,10 +63,6 @@ export default class SlidesManager {
 				(Math.floor(Math.abs(direction) / (this.generalManager.slides.length + 0.001)) + 1) *
 					this.generalManager.slides.length;
 		}
-		// console.log(this.state.currentSlideIndex, direction);
-		// if (!this.generalManager.managers.drag.state.isPointerdown) {
-		// 	this.generalManager.state.sliderPosition = -direction * this.state.oneSlideLength;
-		// }
 	}
 
 	toSlide(toSlideIndex, fast) {
@@ -79,8 +74,6 @@ export default class SlidesManager {
 		this.generalManager.state.timelinePosition = gsap
 			.timeline()
 			.to(this.generalManager.state, { sliderPositionEase: x, duration, ease: Power3.easeInOut });
-		// this.generalManager.state.sliderPosition -=
-		// 	this.generalManager.slides[toSlideIndex].slideManager.mesh.position.x / 200 / this.generalManager.slides.length;
 
 		if (fast) this.generalManager.state.sliderPositionEase = this.generalManager.state.sliderPosition;
 	}

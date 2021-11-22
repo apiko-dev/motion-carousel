@@ -155,24 +155,32 @@ export default class DragManager {
 
 		if (Math.abs(+this.state.delta.toFixed(1)) <= 0.5 && !this.state.isPointerdown) {
 			this.state.isStop = true;
-			if (this.state.tmpIsStop !== this.state.isStop && !this.state.isClicked) {
-				this.state.tmpIsStop = this.state.isStop;
-
-				this.state.delta = 0;
-				const x =
-					Math.round(
-						this.generalManager.state.sliderPositionEase / this.generalManager.managers.slides.state.oneSlideLength
-					) * this.generalManager.managers.slides.state.oneSlideLength;
-				const duration = Math.abs(this.generalManager.state.sliderPositionEase - x) * 15;
-
-				this.generalManager.stopDrag();
-				this.generalManager.state.timelinePosition = gsap
-					.timeline()
-					.to(this.generalManager.state, { sliderPositionEase: x, duration, ease: Power3.easeInOut });
-			}
 		} else {
 			this.state.isStop = false;
 			this.state.tmpIsStop = false;
+		}
+
+		if (
+			Math.abs(+this.state.delta.toFixed(1)) <= 0.5 &&
+			!this.state.isPointerdown &&
+			this.state.tmpIsStop !== this.state.isStop &&
+			!this.state.isClicked
+		) {
+			this.state.tmpIsStop = this.state.isStop;
+			this.state.delta = 0;
+
+			this.generalManager.stopDrag();
+			if (this.generalManager.state.timelinePosition) this.generalManager.state.timelinePosition.pause();
+
+			const x =
+				Math.round(
+					this.generalManager.state.sliderPositionEase / this.generalManager.managers.slides.state.oneSlideLength
+				) * this.generalManager.managers.slides.state.oneSlideLength;
+			const duration = Math.abs(this.generalManager.state.sliderPositionEase - x) * 15;
+
+			this.generalManager.state.timelinePosition = gsap
+				.timeline()
+				.to(this.generalManager.state, { sliderPositionEase: x, duration, ease: Power3.easeInOut });
 		}
 
 		this.generalManager.state.sliderPositionEase += this.state.delta / (200 * this.generalManager.slides.length);
