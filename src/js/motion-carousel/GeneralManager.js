@@ -66,6 +66,70 @@ export default class GeneralManager {
 				shadowIndex: null,
 				slideManager: null,
 			},
+			{
+				images: {
+					bg: { src: 'img/6.jpg', img: null },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/6.jpg', img: null },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/6.jpg', img: null },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/6.jpg', img: null },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/6.jpg', img: null },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/6.jpg', img: null },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/6.jpg', img: null },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/6.jpg', img: null },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
 			// {
 			// 	images: {
 			// 		bg: { src: 'img/7.jpg', img: null },

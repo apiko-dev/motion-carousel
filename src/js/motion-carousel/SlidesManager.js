@@ -94,7 +94,7 @@ export default class SlidesManager {
 			if (x < -0.5) x += 1;
 			if (x < -0.5) x += 1;
 			const z = Math.abs(x) ** 1.2;
-
+			if (index === 0) console.log(x * this.generalManager.slides.length); // opacity of slide
 			const angle = Math.asin(x * 1.5);
 			slideManager.updatePos(
 				x * 200 * this.generalManager.slides.length,
