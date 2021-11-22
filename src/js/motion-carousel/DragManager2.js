@@ -7,6 +7,7 @@ export default class DragManager {
 
 		this.state = {
 			isPointerdown: false,
+			tmpIsPointerdown: false,
 			isMovedX: false,
 			isMovedY: false,
 			isClicked: false,
@@ -42,10 +43,6 @@ export default class DragManager {
 	pointerdown(event) {
 		if (!event.composedPath().includes(this.generalManager.DOM.container)) return;
 
-		this.generalManager.managers.three.renderer.domElement.style.cursor = this.getIsMouseIntersect()
-			? 'pointer'
-			: 'grabbing';
-
 		this.state.isPointerdown = true;
 		this.state.isClicked = false;
 		this.state.direction = null;
@@ -60,6 +57,10 @@ export default class DragManager {
 		this.state.y0 = event.pageY;
 		this.state.y1 = event.pageY;
 		this.state.y2 = event.pageY;
+
+		this.generalManager.managers.three.renderer.domElement.style.cursor = this.getIsMouseIntersect()
+			? 'pointer'
+			: 'grabbing';
 	}
 
 	pointermove(event) {
@@ -69,9 +70,7 @@ export default class DragManager {
 		this.state.mouse.x = (event.pageX / this.generalManager.width) * 2 - 1;
 		this.state.mouse.y = -(event.pageY / this.generalManager.height) * 2 + 1;
 
-		const deltaX = this.state.x2 - this.state.x1;
-		const deltaY = this.state.y2 - this.state.y1;
-		const isDeltaYMoreDeltaX = Math.abs(deltaX) < Math.abs(deltaY);
+		const isDeltaYMoreDeltaX = Math.abs(this.state.x2 - this.state.x1) < Math.abs(this.state.y2 - this.state.y1);
 
 		if (this.state.isPointerdown) {
 			this.state.isMovedX = Math.abs(this.state.x0 - this.state.x2) > 1;
@@ -93,7 +92,6 @@ export default class DragManager {
 			event.pointerType === 'touch'
 		) {
 			this.pointerup(event);
-			console.log('OTMENA');
 		}
 
 		if (this.state.tmpIsPointerdown !== this.state.isPointerdown && Math.abs(this.state.x0 - this.state.x2) > 0) {
@@ -121,30 +119,23 @@ export default class DragManager {
 	}
 
 	pointerup(event) {
-		console.log('up', this.state.direction);
-		this.state.isPointerdown = false;
-		this.state.tmpIsPointerdown = false;
-
 		this.state.mouse.x = (event.pageX / this.generalManager.width) * 2 - 1;
 		this.state.mouse.y = -(event.pageY / this.generalManager.height) * 2 + 1;
-		if (
-			!this.state.isMovedX &&
-			!this.state.isClicked &&
-			// && (this.state.direction !== 'v' || event.pointerType !== 'touch')
-			!this.state.isMovedY
-		) {
+
+		if (!this.state.isMovedX && !this.state.isClicked && !this.state.isMovedY) {
 			this.click();
 		}
 
+		this.state.isPointerdown = false;
+		this.state.tmpIsPointerdown = false;
 		this.state.isMovedX = false;
 		this.state.isMovedY = false;
+		this.state.y2 = 0;
+		this.state.y1 = 0;
 
 		this.generalManager.managers.three.renderer.domElement.style.cursor = this.getIsMouseIntersect()
 			? 'pointer'
 			: 'grab';
-
-		this.state.y2 = 0;
-		this.state.y1 = 0;
 	}
 
 	tick() {
