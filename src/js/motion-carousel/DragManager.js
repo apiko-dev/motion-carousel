@@ -12,6 +12,8 @@ export default class DragManager {
 			isMovedY: false,
 			isClicked: false,
 			direction: null,
+			pointerType: null,
+			isDragStarted: false,
 
 			x0: 0,
 			x1: 0,
@@ -46,6 +48,7 @@ export default class DragManager {
 		this.state.isPointerdown = true;
 		this.state.isClicked = false;
 		this.state.direction = null;
+		this.state.pointerType = event.pointerType;
 
 		this.state.isMovedX = false;
 		this.state.isMovedY = false;
@@ -58,9 +61,15 @@ export default class DragManager {
 		this.state.y1 = event.pageY;
 		this.state.y2 = event.pageY;
 
-		this.generalManager.managers.three.renderer.domElement.style.cursor = this.getIsMouseIntersect()
-			? 'pointer'
-			: 'grabbing';
+		if (this.getIsMouseIntersect() && this.state.isDragStarted) {
+			this.generalManager.managers.three.renderer.domElement.style.cursor = 'grabbing';
+		}
+		if (this.getIsMouseIntersect() && !this.state.isDragStarted) {
+			this.generalManager.managers.three.renderer.domElement.style.cursor = 'pointer';
+		}
+		if (!this.getIsMouseIntersect()) {
+			this.generalManager.managers.three.renderer.domElement.style.cursor = 'pointer';
+		}
 	}
 
 	pointermove(event) {
@@ -96,6 +105,7 @@ export default class DragManager {
 
 		if (this.state.tmpIsPointerdown !== this.state.isPointerdown && Math.abs(this.state.x0 - this.state.x2) > 0) {
 			this.generalManager.startDrag();
+			this.state.isDragStarted = true;
 		}
 
 		if (this.state.tmpIsPointerdown !== this.state.isPointerdown) {
@@ -143,7 +153,10 @@ export default class DragManager {
 
 		if (this.state.isPointerdown && isDeltaXMoreDeltaY) {
 			this.state.delta = this.state.x2 - this.state.x1;
-		} else if (!this.state.isPointerdown || (this.state.isPointerdown && this.state.direction !== 'h')) {
+		} else if (
+			!this.state.isPointerdown ||
+			(this.state.isPointerdown && this.state.direction !== 'h' && this.state.pointerType === 'touch')
+		) {
 			this.state.delta *= 0.95;
 		} else {
 			this.state.delta = 0;
@@ -170,6 +183,7 @@ export default class DragManager {
 			this.state.delta = 0;
 
 			this.generalManager.stopDrag();
+			this.state.isDragStarted = false;
 			if (this.generalManager.state.timelinePosition) this.generalManager.state.timelinePosition.pause();
 
 			const x =
