@@ -68,7 +68,7 @@ export default class GeneralManager {
 			},
 			{
 				images: {
-					bg: { src: 'img/6.jpg', img: null },
+					bg: { src: 'img/7.jpg', img: null },
 				},
 				originalIndex: null,
 				shadowIndex: null,
@@ -76,7 +76,7 @@ export default class GeneralManager {
 			},
 			{
 				images: {
-					bg: { src: 'img/6.jpg', img: null },
+					bg: { src: 'img/8.jpg', img: null },
 				},
 				originalIndex: null,
 				shadowIndex: null,
@@ -84,7 +84,7 @@ export default class GeneralManager {
 			},
 			{
 				images: {
-					bg: { src: 'img/6.jpg', img: null },
+					bg: { src: 'img/9.jpg', img: null },
 				},
 				originalIndex: null,
 				shadowIndex: null,
@@ -92,7 +92,7 @@ export default class GeneralManager {
 			},
 			{
 				images: {
-					bg: { src: 'img/6.jpg', img: null },
+					bg: { src: 'img/10.jpg', img: null },
 				},
 				originalIndex: null,
 				shadowIndex: null,
@@ -100,45 +100,21 @@ export default class GeneralManager {
 			},
 			{
 				images: {
-					bg: { src: 'img/6.jpg', img: null },
+					bg: { src: 'img/11.jpg', img: null },
 				},
 				originalIndex: null,
 				shadowIndex: null,
 				slideManager: null,
 			},
-			{
-				images: {
-					bg: { src: 'img/6.jpg', img: null },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/6.jpg', img: null },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/6.jpg', img: null },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			// {
-			// 	images: {
-			// 		bg: { src: 'img/7.jpg', img: null },
-			// 	},
-			// 	originalIndex: null,
-			// 	shadowIndex: null,
-			// 	slideManager: null,
-			// },
 		];
+
+		this.settings = {
+			breakpoints: [
+				{ minWidth: 0, slideWidth: 145, slideHeight: 300, slideOrderNumberToOpacity: 2 },
+				{ minWidth: 600, slideWidth: 240, slideHeight: 512, slideOrderNumberToOpacity: 3 },
+				{ minWidth: 769, slideWidth: 300, slideHeight: 564, slideOrderNumberToOpacity: 4 },
+			],
+		};
 
 		this.state = {
 			isCreated: false,
@@ -148,6 +124,9 @@ export default class GeneralManager {
 			sliderPosition: null,
 			sliderPositionEase: null,
 			timelinePosition: null,
+			slideWidth: 200,
+			slideHeight: 350,
+			slideOrderNumberToOpacity: 3,
 		};
 
 		this.eventCallbacks = {
@@ -202,6 +181,7 @@ export default class GeneralManager {
 		this.state.time = 0;
 
 		this.updateWidthHeight();
+		this.checkBreakpoints();
 		this.addDefaultListeners();
 
 		this.eventCallbacks.create.forEach((callback) => callback());
@@ -275,8 +255,19 @@ export default class GeneralManager {
 		this.state._height = this.DOM.container.clientHeight;
 	}
 
+	checkBreakpoints() {
+		this.settings.breakpoints.forEach((breakpoint) => {
+			if (this.width >= breakpoint.minWidth) {
+				this.state.slideWidth = breakpoint.slideWidth;
+				this.state.slideHeight = breakpoint.slideHeight;
+				this.state.slideOrderNumberToOpacity = breakpoint.slideOrderNumberToOpacity;
+			}
+		});
+	}
+
 	resize() {
 		this.updateWidthHeight();
+		this.checkBreakpoints();
 
 		this.eventCallbacks.resize.forEach((callback) => callback(this.width, this.height));
 	}

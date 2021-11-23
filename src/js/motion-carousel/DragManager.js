@@ -68,7 +68,7 @@ export default class DragManager {
 			this.generalManager.managers.three.renderer.domElement.style.cursor = 'pointer';
 		}
 		if (!this.getIsMouseIntersect()) {
-			this.generalManager.managers.three.renderer.domElement.style.cursor = 'pointer';
+			this.generalManager.managers.three.renderer.domElement.style.cursor = 'grabbing';
 		}
 	}
 
@@ -198,7 +198,8 @@ export default class DragManager {
 				.to(this.generalManager.state, { sliderPositionEase: x, duration, ease: Power3.easeInOut });
 		}
 
-		this.generalManager.state.sliderPositionEase += this.state.delta / (200 * this.generalManager.slides.length);
+		this.generalManager.state.sliderPositionEase +=
+			this.state.delta / (this.generalManager.state.slideWidth * this.generalManager.slides.length);
 		this.state.x1 = this.state.x2;
 		this.state.y1 = this.state.y2;
 	}
@@ -219,6 +220,7 @@ export default class DragManager {
 			this.state.isClicked = true;
 			this.state.delta = 0;
 			this.generalManager.slideClick(intersects[0].object.userData.id);
+			this.state.isDragStarted = false;
 		}
 	}
 }

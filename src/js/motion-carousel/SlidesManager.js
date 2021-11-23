@@ -69,7 +69,9 @@ export default class SlidesManager {
 		if (this.generalManager.state.timelinePosition) this.generalManager.state.timelinePosition.pause();
 		const x =
 			this.generalManager.state.sliderPositionEase -
-			this.generalManager.slides[toSlideIndex].slideManager.mesh.position.x / 200 / this.generalManager.slides.length;
+			this.generalManager.slides[toSlideIndex].slideManager.mesh.position.x /
+				this.generalManager.state.slideWidth /
+				this.generalManager.slides.length;
 
 		const duration = 0.5;
 
@@ -94,12 +96,24 @@ export default class SlidesManager {
 			if (x < -0.5) x += 1;
 			if (x < -0.5) x += 1;
 			const z = Math.abs(x) ** 1.2;
-			if (index === 0) console.log(x * this.generalManager.slides.length); // opacity of slide
+
+			const orderNumber = Math.abs(x * this.generalManager.slides.length);
+			let opacity = 1;
+			if (
+				orderNumber >= this.generalManager.state.slideOrderNumberToOpacity &&
+				orderNumber < this.generalManager.state.slideOrderNumberToOpacity + 1
+			) {
+				opacity = 1 - (orderNumber % this.generalManager.state.slideOrderNumberToOpacity);
+			}
+			if (orderNumber >= this.generalManager.state.slideOrderNumberToOpacity + 1) {
+				opacity = 0;
+			}
 			const angle = Math.asin(x * 1.5);
 			slideManager.updatePos(
-				x * 200 * this.generalManager.slides.length,
-				z * 200 * this.generalManager.slides.length,
-				angle
+				x * this.generalManager.state.slideWidth * this.generalManager.slides.length,
+				z * this.generalManager.state.slideWidth * this.generalManager.slides.length,
+				angle,
+				opacity
 			);
 		});
 	}

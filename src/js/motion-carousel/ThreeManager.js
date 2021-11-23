@@ -54,6 +54,7 @@ export default class ThreeManager {
 
 	resize(width, height) {
 		this.camera.aspect = width / height;
+		this.camera.fov = this.fov;
 		this.camera.updateProjectionMatrix();
 		this.renderer.setSize(width, height);
 	}
