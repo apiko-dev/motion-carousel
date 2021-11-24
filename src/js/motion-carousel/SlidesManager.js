@@ -69,7 +69,8 @@ export default class SlidesManager {
 		if (this.generalManager.state.timelinePosition) this.generalManager.state.timelinePosition.pause();
 		const x =
 			this.generalManager.state.sliderPositionEase -
-			this.generalManager.slides[toSlideIndex].slideManager.mesh.position.x /
+			(this.generalManager.slides[toSlideIndex].slideManager.mesh.position.x -
+				this.getSlideGapByOrder(this.generalManager.slides[toSlideIndex].slideManager.orderNumber)) /
 				this.generalManager.state.slideWidth /
 				this.generalManager.slides.length;
 
@@ -95,27 +96,43 @@ export default class SlidesManager {
 			if (x > 0.5) x -= 1;
 			if (x < -0.5) x += 1;
 			if (x < -0.5) x += 1;
-			const z = Math.abs(x) ** 1.2;
 
-			const orderNumber = Math.abs(x * this.generalManager.slides.length);
+			const orderNumber = Number(x * this.generalManager.slides.length);
+
+			slideManager.orderNumber = orderNumber; //eslint-disable-line
+
+			const currentDelta = 0.5 / (this.generalManager.slides.length / 2);
+			const neededDelta = 0.5 / (this.generalManager.state.slideOrderNumberToOpacity / 2);
+
+			x *= neededDelta / currentDelta;
+
+			const z = Math.abs(x) ** 1.8;
+
 			let opacity = 1;
 			if (
-				orderNumber >= this.generalManager.state.slideOrderNumberToOpacity &&
-				orderNumber < this.generalManager.state.slideOrderNumberToOpacity + 1
+				Math.abs(orderNumber) >= Math.floor(this.generalManager.state.slideOrderNumberToOpacity / 2) &&
+				Math.abs(orderNumber) < Math.floor(this.generalManager.state.slideOrderNumberToOpacity / 2) + 1
 			) {
-				opacity = 1 - (orderNumber % this.generalManager.state.slideOrderNumberToOpacity);
+				opacity = 1 - (Math.abs(orderNumber) % Math.floor(this.generalManager.state.slideOrderNumberToOpacity / 2));
 			}
-			if (orderNumber >= this.generalManager.state.slideOrderNumberToOpacity + 1) {
+			if (Math.abs(orderNumber) >= Math.floor(this.generalManager.state.slideOrderNumberToOpacity / 2) + 1) {
 				opacity = 0;
 			}
-			const angle = Math.asin(x * 1.5);
+
+			const angle = 0.2 * Math.sin(x * 2 * Math.PI) ** 3;
+
 			slideManager.updatePos(
-				x * this.generalManager.state.slideWidth * this.generalManager.slides.length,
-				z * this.generalManager.state.slideWidth * this.generalManager.slides.length,
+				x * this.generalManager.state.slideWidth * this.generalManager.state.slideOrderNumberToOpacity +
+					this.getSlideGapByOrder(orderNumber),
+				z * this.generalManager.state.slideWidth * this.generalManager.state.slideOrderNumberToOpacity,
 				angle,
 				opacity
 			);
 		});
+	}
+
+	getSlideGapByOrder(orderNumber) {
+		return this.generalManager.state.slideGap * Math.sign(orderNumber) * Math.abs(orderNumber) ** 2.3;
 	}
 
 	tick() {

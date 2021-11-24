@@ -17,6 +17,9 @@ export default class Slide {
 			resize: this.resize.bind(this),
 		};
 
+		this.shadowScaleHeight = 1 / 2.5;
+		this.shadowScaleWidth = 8 / 10;
+
 		this.generalManager.addListener('resize', this.handlers.resize);
 	}
 
@@ -74,7 +77,7 @@ export default class Slide {
 		this.shadowMesh.position.set(
 			x,
 			-this.generalManager.state.slideHeight / 2 - this.generalManager.state.slideHeight / 20,
-			-z + this.generalManager.state.slideHeight / 2 / 1.3
+			-z + (this.generalManager.state.slideHeight / 2) * this.shadowScaleHeight
 		);
 		this.shadowMesh.rotation.set(90 / (180 / Math.PI), 0, -angle);
 		this.material.uniforms.uOpacity.value = opacity;
@@ -92,8 +95,8 @@ export default class Slide {
 		this.mesh.scale.x = this.generalManager.state.slideWidth;
 		this.mesh.scale.y = this.generalManager.state.slideHeight;
 
-		this.shadowMesh.scale.x = this.generalManager.state.slideWidth;
-		this.shadowMesh.scale.y = this.generalManager.state.slideHeight / 1.3;
+		this.shadowMesh.scale.x = this.generalManager.state.slideWidth * this.shadowScaleWidth;
+		this.shadowMesh.scale.y = this.generalManager.state.slideHeight * this.shadowScaleHeight;
 	}
 
 	resize() {

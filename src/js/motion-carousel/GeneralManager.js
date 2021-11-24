@@ -110,9 +110,9 @@ export default class GeneralManager {
 
 		this.settings = {
 			breakpoints: [
-				{ minWidth: 0, slideWidth: 145, slideHeight: 300, slideOrderNumberToOpacity: 2 },
-				{ minWidth: 600, slideWidth: 240, slideHeight: 512, slideOrderNumberToOpacity: 3 },
-				{ minWidth: 769, slideWidth: 300, slideHeight: 564, slideOrderNumberToOpacity: 4 },
+				{ minWidth: 0, slideWidth: 145, slideHeight: 300, slideOrderNumberToOpacity: 5, slideGap: -10 },
+				{ minWidth: 600, slideWidth: 240, slideHeight: 512, slideOrderNumberToOpacity: 7, slideGap: 30 },
+				{ minWidth: 769, slideWidth: 300, slideHeight: 564, slideOrderNumberToOpacity: 7, slideGap: 50 },
 			],
 		};
 
@@ -127,6 +127,7 @@ export default class GeneralManager {
 			slideWidth: 200,
 			slideHeight: 350,
 			slideOrderNumberToOpacity: 3,
+			slideGap: 50,
 		};
 
 		this.eventCallbacks = {
@@ -261,6 +262,7 @@ export default class GeneralManager {
 				this.state.slideWidth = breakpoint.slideWidth;
 				this.state.slideHeight = breakpoint.slideHeight;
 				this.state.slideOrderNumberToOpacity = breakpoint.slideOrderNumberToOpacity;
+				this.state.slideGap = breakpoint.slideGap;
 			}
 		});
 	}

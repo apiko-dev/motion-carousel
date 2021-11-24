@@ -5,7 +5,7 @@ export default class ThreeManager {
 		this.generalManager = generalManager;
 
 		this.setings = {
-			cameraPositionZ: 500,
+			cameraPositionZ: 250,
 		};
 
 		this.handlers = {
