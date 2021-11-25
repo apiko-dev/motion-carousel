@@ -73,7 +73,7 @@
   },
   "dependencies": {
     "gsap": "^3.8.0",
-    "three": "^0.134.0",
-    "three-orbitcontrols": "^2.110.3"
+    "stats-js": "^1.0.1",
+    "three": "^0.134.0"
   }
 }

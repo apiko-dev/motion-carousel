@@ -2,6 +2,19 @@ import { gsap, Power3 } from 'gsap';
 
 import Slide from './Slide';
 
+function lerp(start, end, t) {
+	return start * (1 - t) + end * t;
+}
+
+function spline(x, points) {
+	for (let i = 0; i < points.length - 1; i++) {
+		if (x >= points[i].x && x < points[i + 1].x) {
+			return lerp(points[i].y, points[i + 1].y, (x - points[i].x) / (points[i + 1].x - points[i].x));
+		}
+	}
+	return 1;
+}
+
 export default class SlidesManager {
 	constructor(generalManager) {
 		this.generalManager = generalManager;
@@ -98,7 +111,11 @@ export default class SlidesManager {
 			if (x < -0.5) x += 1;
 
 			const orderNumber = Number(x * this.generalManager.slides.length);
-
+			if (Math.abs(orderNumber) > this.generalManager.state.slideOrderNumberToOpacity) {
+				slideManager.hide();
+				return;
+			}
+			slideManager.show();
 			slideManager.orderNumber = orderNumber; //eslint-disable-line
 
 			const currentDelta = 0.5 / (this.generalManager.slides.length / 2);
@@ -119,40 +136,46 @@ export default class SlidesManager {
 				opacity = 0;
 			}
 
-			const angle = 0.25 * Math.sign(Math.sin(x * 1.4 * Math.PI)) * Math.abs(Math.sin(x * 1.5 * Math.PI)) ** 1.5;
+			const sin = Math.sin(x * 1.5 * Math.PI);
+			const angle = 0.2 * Math.sign(sin) * Math.abs(sin) ** 1.3;
 
 			slideManager.updatePos(
 				x * this.generalManager.state.slideWidth * this.generalManager.state.slideOrderNumberToOpacity +
-					this.getSlideGapByOrder(orderNumber),
-				(z * this.generalManager.state.slideWidth * this.generalManager.state.slideOrderNumberToOpacity) / 2.2,
+					this.getSlideGapByOrder(orderNumber, index),
+				(z * this.generalManager.state.slideWidth * this.generalManager.state.slideOrderNumberToOpacity) / 1.75,
 				angle,
 				opacity
 			);
 
-			let scale = 0.5;
-			if (Math.abs(orderNumber) > 0 && Math.abs(orderNumber) <= 1) {
-				scale = 1 - scale * Math.abs(orderNumber);
-				slideManager.updateWidthHeight(
-					this.generalManager.state.slideWidth * scale,
-					this.generalManager.state.slideHeight
-				);
-			}
-			if (Math.abs(orderNumber) > 1) {
-				slideManager.updateWidthHeight(
-					this.generalManager.state.slideWidth * scale,
-					this.generalManager.state.slideHeight
-				);
-			}
+			slideManager.updateWidthHeight(
+				this.generalManager.state.slideWidth *
+					spline(Math.abs(orderNumber), [
+						{ x: 0, y: this.generalManager.state.scaleWidth0 },
+						{ x: 1, y: this.generalManager.state.scaleWidth1 },
+						{ x: 2, y: this.generalManager.state.scaleWidth2 },
+						{ x: 3, y: this.generalManager.state.scaleWidth3 },
+						{ x: 4, y: this.generalManager.state.scaleWidth4 },
+					]),
+				this.generalManager.state.slideHeight
+			);
 		});
 	}
 
 	getSlideGapByOrder(orderNumber) {
-		// return (orderNumber * -this.generalManager.state.slideWidth) / 2;
-		return (
-			this.generalManager.state.slideGap * Math.sign(orderNumber) * Math.abs(orderNumber) ** 1.3 -
-			(this.generalManager.state.slideWidth / 4.5) * orderNumber
-		);
-		// return this.generalManager.state.slideGap * Math.sign(orderNumber) * Math.abs(orderNumber) ** 1;
+		let slideGap = -(this.generalManager.state.slideWidth / 4.5) * orderNumber;
+		const gap = 20;
+		slideGap +=
+			gap *
+			orderNumber *
+			spline(Math.abs(orderNumber), [
+				{ x: 0, y: this.generalManager.state.scaleGap0 },
+				{ x: 1, y: this.generalManager.state.scaleGap1 },
+				{ x: 2, y: this.generalManager.state.scaleGap2 },
+				{ x: 3, y: this.generalManager.state.scaleGap3 },
+				{ x: 4, y: this.generalManager.state.scaleGap4 },
+			]);
+
+		return slideGap;
 	}
 
 	tick() {

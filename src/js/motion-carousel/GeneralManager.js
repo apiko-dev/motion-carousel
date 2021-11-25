@@ -117,22 +117,66 @@ export default class GeneralManager {
 					slideOrderNumberToOpacity: 5,
 					slideGap: 5,
 					cameraPositionZ: 150,
+					scaleGap0: 1,
+					scaleGap1: 0.3,
+					scaleGap2: 0.5,
+					scaleGap3: 1,
+					scaleGap4: 1.2,
+					scaleWidth0: 1,
+					scaleWidth1: 0.7,
+					scaleWidth2: 0.7,
+					scaleWidth3: 0.8,
+					scaleWidth4: 0.8,
 				},
 				{
 					minWidth: 325,
 					slideWidth: 145,
 					slideHeight: 300,
 					slideOrderNumberToOpacity: 5,
-					slideGap: 5,
+					cameraPositionZ: 180,
+					scaleGap0: 1,
+					scaleGap1: 0.3,
+					scaleGap2: 0.5,
+					scaleGap3: 1,
+					scaleGap4: 1.2,
+					scaleWidth0: 1,
+					scaleWidth1: 0.7,
+					scaleWidth2: 0.7,
+					scaleWidth3: 0.8,
+					scaleWidth4: 0.8,
+				},
+				{
+					minWidth: 600,
+					slideWidth: 244,
+					slideHeight: 512,
+					slideOrderNumberToOpacity: 5,
+					scaleGap0: 1,
+					scaleGap1: 1.1,
+					scaleGap2: 0.8,
+					scaleGap3: 1.2,
+					scaleGap4: 2,
+					scaleWidth0: 1,
+					scaleWidth1: 0.55,
+					scaleWidth2: 0.7,
+					scaleWidth3: 0.8,
+					scaleWidth4: 0.8,
 					cameraPositionZ: 210,
 				},
-				{ minWidth: 600, slideWidth: 244, slideHeight: 512, slideOrderNumberToOpacity: 5, slideGap: 35 },
 				{
 					minWidth: 769,
 					slideWidth: 288,
 					slideHeight: 564,
 					slideOrderNumberToOpacity: 7,
-					slideGap: 30,
+					scaleGap0: 1,
+					scaleGap1: 1.8,
+					scaleGap2: 2.1,
+					scaleGap3: 4.2,
+					scaleGap4: 4,
+					scaleWidth0: 1,
+					scaleWidth1: 0.55,
+					scaleWidth2: 0.7,
+					scaleWidth3: 0.8,
+					scaleWidth4: 0.8,
 					cameraPositionZ: 250,
 				},
 			],
@@ -286,7 +330,16 @@ export default class GeneralManager {
 				if (breakpoint.slideHeight !== undefined) this.state.slideHeight = breakpoint.slideHeight;
 				if (breakpoint.slideOrderNumberToOpacity !== undefined)
 					this.state.slideOrderNumberToOpacity = breakpoint.slideOrderNumberToOpacity;
-				if (breakpoint.slideGap !== undefined) this.state.slideGap = breakpoint.slideGap;
+				if (breakpoint.scaleGap0 !== undefined) this.state.scaleGap0 = breakpoint.scaleGap0;
+				if (breakpoint.scaleGap1 !== undefined) this.state.scaleGap1 = breakpoint.scaleGap1;
+				if (breakpoint.scaleGap2 !== undefined) this.state.scaleGap2 = breakpoint.scaleGap2;
+				if (breakpoint.scaleGap3 !== undefined) this.state.scaleGap3 = breakpoint.scaleGap3;
+				if (breakpoint.scaleGap4 !== undefined) this.state.scaleGap4 = breakpoint.scaleGap4;
+				if (breakpoint.scaleWidth0 !== undefined) this.state.scaleWidth0 = breakpoint.scaleWidth0;
+				if (breakpoint.scaleWidth1 !== undefined) this.state.scaleWidth1 = breakpoint.scaleWidth1;
+				if (breakpoint.scaleWidth2 !== undefined) this.state.scaleWidth2 = breakpoint.scaleWidth2;
+				if (breakpoint.scaleWidth3 !== undefined) this.state.scaleWidth3 = breakpoint.scaleWidth3;
+				if (breakpoint.scaleWidth4 !== undefined) this.state.scaleWidth4 = breakpoint.scaleWidth4;
 				if (breakpoint.cameraPositionZ !== undefined) this.state.cameraPositionZ = breakpoint.cameraPositionZ;
 			}
 		});

@@ -23,6 +23,22 @@ export default class Slide {
 		this.generalManager.addListener('resize', this.handlers.resize);
 	}
 
+	hide() {
+		if (this.isHided) return;
+
+		this.isHided = true;
+		this.generalManager.managers.three.scene.remove(this.mesh);
+		this.generalManager.managers.three.scene.remove(this.shadowMesh);
+	}
+
+	show() {
+		if (!this.isHided) return;
+
+		this.isHided = false;
+		this.generalManager.managers.three.scene.add(this.mesh);
+		this.generalManager.managers.three.scene.add(this.shadowMesh);
+	}
+
 	create() {
 		this.geometry = new THREE.PlaneBufferGeometry(1, 1, 1, 1);
 
@@ -85,11 +101,10 @@ export default class Slide {
 	}
 
 	updateContainerUniform() {
-		// this.material.uniforms.uScreenSize.value = new THREE.Vector2(
-		// 	this.generalManager.state.slideWidth,
-		// 	this.generalManager.state.slideHeight
-		// );
-		this.material.uniforms.uScreenSize.value = new THREE.Vector2(this.mesh.scale.x, this.mesh.scale.y);
+		this.material.uniforms.uScreenSize.value = new THREE.Vector2(
+			this.generalManager.state.slideWidth,
+			this.generalManager.state.slideHeight
+		);
 	}
 
 	updateWidthHeight(x = this.generalManager.state.slideWidth, y = this.generalManager.state.slideHeight) {
@@ -98,11 +113,9 @@ export default class Slide {
 
 		this.shadowMesh.scale.x = x * this.shadowScaleWidth;
 		this.shadowMesh.scale.y = y * this.shadowScaleHeight;
-		this.updateContainerUniform();
 	}
 
 	resize() {
-		this.updateWidthHeight();
-		// this.updateContainerUniform();
+		this.updateContainerUniform();
 	}
 }
