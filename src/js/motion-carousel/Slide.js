@@ -101,10 +101,11 @@ export default class Slide {
 	}
 
 	updateContainerUniform() {
-		this.material.uniforms.uScreenSize.value = new THREE.Vector2(
-			this.generalManager.state.slideWidth,
-			this.generalManager.state.slideHeight
-		);
+		// this.material.uniforms.uScreenSize.value = new THREE.Vector2(
+		// 	this.generalManager.state.slideWidth,
+		// 	this.generalManager.state.slideHeight
+		// );
+		this.material.uniforms.uScreenSize.value = new THREE.Vector2(this.mesh.scale.x, this.mesh.scale.y);
 	}
 
 	updateWidthHeight(x = this.generalManager.state.slideWidth, y = this.generalManager.state.slideHeight) {
@@ -113,6 +114,7 @@ export default class Slide {
 
 		this.shadowMesh.scale.x = x * this.shadowScaleWidth;
 		this.shadowMesh.scale.y = y * this.shadowScaleHeight;
+		this.updateContainerUniform();
 	}
 
 	resize() {
