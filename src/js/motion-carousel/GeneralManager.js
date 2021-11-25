@@ -110,9 +110,31 @@ export default class GeneralManager {
 
 		this.settings = {
 			breakpoints: [
-				{ minWidth: 0, slideWidth: 145, slideHeight: 300, slideOrderNumberToOpacity: 5, slideGap: -10 },
-				{ minWidth: 600, slideWidth: 240, slideHeight: 512, slideOrderNumberToOpacity: 7, slideGap: 30 },
-				{ minWidth: 769, slideWidth: 300, slideHeight: 564, slideOrderNumberToOpacity: 7, slideGap: 50 },
+				{
+					minWidth: 0,
+					slideWidth: 128,
+					slideHeight: 270,
+					slideOrderNumberToOpacity: 5,
+					slideGap: 5,
+					cameraPositionZ: 150,
+				},
+				{
+					minWidth: 325,
+					slideWidth: 145,
+					slideHeight: 300,
+					slideOrderNumberToOpacity: 5,
+					slideGap: 5,
+					cameraPositionZ: 210,
+				},
+				{ minWidth: 600, slideWidth: 244, slideHeight: 512, slideOrderNumberToOpacity: 5, slideGap: 35 },
+				{
+					minWidth: 769,
+					slideWidth: 288,
+					slideHeight: 564,
+					slideOrderNumberToOpacity: 7,
+					slideGap: 30,
+					cameraPositionZ: 250,
+				},
 			],
 		};
 
@@ -128,6 +150,7 @@ export default class GeneralManager {
 			slideHeight: 350,
 			slideOrderNumberToOpacity: 3,
 			slideGap: 50,
+			cameraPositionZ: 150,
 		};
 
 		this.eventCallbacks = {
@@ -259,10 +282,12 @@ export default class GeneralManager {
 	checkBreakpoints() {
 		this.settings.breakpoints.forEach((breakpoint) => {
 			if (this.width >= breakpoint.minWidth) {
-				this.state.slideWidth = breakpoint.slideWidth;
-				this.state.slideHeight = breakpoint.slideHeight;
-				this.state.slideOrderNumberToOpacity = breakpoint.slideOrderNumberToOpacity;
-				this.state.slideGap = breakpoint.slideGap;
+				if (breakpoint.slideWidth !== undefined) this.state.slideWidth = breakpoint.slideWidth;
+				if (breakpoint.slideHeight !== undefined) this.state.slideHeight = breakpoint.slideHeight;
+				if (breakpoint.slideOrderNumberToOpacity !== undefined)
+					this.state.slideOrderNumberToOpacity = breakpoint.slideOrderNumberToOpacity;
+				if (breakpoint.slideGap !== undefined) this.state.slideGap = breakpoint.slideGap;
+				if (breakpoint.cameraPositionZ !== undefined) this.state.cameraPositionZ = breakpoint.cameraPositionZ;
 			}
 		});
 	}

@@ -4,9 +4,10 @@ export default class ThreeManager {
 	constructor(generalManager) {
 		this.generalManager = generalManager;
 
-		this.setings = {
-			cameraPositionZ: 250,
-		};
+		// this.setings = {
+		// 	// cameraPositionZ: 210,
+		// 	cameraPositionZ: 130,
+		// };
 
 		this.handlers = {
 			create: this.create.bind(this),
@@ -29,7 +30,7 @@ export default class ThreeManager {
 			1,
 			10000
 		);
-		this.camera.position.z = this.setings.cameraPositionZ;
+		this.camera.position.z = this.generalManager.state.cameraPositionZ;
 		this.renderer = new THREE.WebGLRenderer({ alpha: true });
 		this.renderer.setSize(this.generalManager.width, this.generalManager.height);
 		this.renderer.setPixelRatio(2);
@@ -42,7 +43,7 @@ export default class ThreeManager {
 	}
 
 	get fov() {
-		return 2 * Math.atan(this.generalManager.height / 2 / this.setings.cameraPositionZ) * (180 / Math.PI);
+		return 2 * Math.atan(this.generalManager.height / 2 / this.generalManager.state.cameraPositionZ) * (180 / Math.PI);
 	}
 
 	destroy() {
@@ -54,6 +55,7 @@ export default class ThreeManager {
 
 	resize(width, height) {
 		this.camera.aspect = width / height;
+		this.camera.position.z = this.generalManager.state.cameraPositionZ;
 		this.camera.fov = this.fov;
 		this.camera.updateProjectionMatrix();
 		this.renderer.setSize(width, height);

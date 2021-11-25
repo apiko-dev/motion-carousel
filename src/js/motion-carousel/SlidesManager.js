@@ -119,20 +119,40 @@ export default class SlidesManager {
 				opacity = 0;
 			}
 
-			const angle = 0.2 * Math.sin(x * 2 * Math.PI) ** 3;
+			const angle = 0.25 * Math.sign(Math.sin(x * 1.4 * Math.PI)) * Math.abs(Math.sin(x * 1.5 * Math.PI)) ** 1.5;
 
 			slideManager.updatePos(
 				x * this.generalManager.state.slideWidth * this.generalManager.state.slideOrderNumberToOpacity +
 					this.getSlideGapByOrder(orderNumber),
-				z * this.generalManager.state.slideWidth * this.generalManager.state.slideOrderNumberToOpacity,
+				(z * this.generalManager.state.slideWidth * this.generalManager.state.slideOrderNumberToOpacity) / 2.2,
 				angle,
 				opacity
 			);
+
+			let scale = 0.5;
+			if (Math.abs(orderNumber) > 0 && Math.abs(orderNumber) <= 1) {
+				scale = 1 - scale * Math.abs(orderNumber);
+				slideManager.updateWidthHeight(
+					this.generalManager.state.slideWidth * scale,
+					this.generalManager.state.slideHeight
+				);
+			}
+			if (Math.abs(orderNumber) > 1) {
+				slideManager.updateWidthHeight(
+					this.generalManager.state.slideWidth * scale,
+					this.generalManager.state.slideHeight
+				);
+			}
 		});
 	}
 
 	getSlideGapByOrder(orderNumber) {
-		return this.generalManager.state.slideGap * Math.sign(orderNumber) * Math.abs(orderNumber) ** 2.3;
+		// return (orderNumber * -this.generalManager.state.slideWidth) / 2;
+		return (
+			this.generalManager.state.slideGap * Math.sign(orderNumber) * Math.abs(orderNumber) ** 1.3 -
+			(this.generalManager.state.slideWidth / 4.5) * orderNumber
+		);
+		// return this.generalManager.state.slideGap * Math.sign(orderNumber) * Math.abs(orderNumber) ** 1;
 	}
 
 	tick() {
