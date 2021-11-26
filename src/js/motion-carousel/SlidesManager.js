@@ -137,12 +137,12 @@ export default class SlidesManager {
 			}
 
 			const sin = Math.sin(x * 1.5 * Math.PI);
-			const angle = 0.2 * Math.sign(sin) * Math.abs(sin) ** 1.3;
+			const angle = 0.15 * Math.sign(sin) * Math.abs(sin) ** 1.3;
 
 			slideManager.updatePos(
 				x * this.generalManager.state.slideWidth * this.generalManager.state.slideOrderNumberToOpacity +
 					this.getSlideGapByOrder(orderNumber, index),
-				(z * this.generalManager.state.slideWidth * this.generalManager.state.slideOrderNumberToOpacity) / 1.75,
+				z * this.generalManager.state.slideWidth * this.generalManager.state.slideOrderNumberToOpacity * 1.3,
 				angle,
 				opacity
 			);
