@@ -200,6 +200,7 @@ export default class DragManager {
 
 		this.generalManager.state.sliderPositionEase +=
 			this.state.delta / (this.generalManager.state.slideWidth * this.generalManager.slides.length);
+		if (Math.abs(this.generalManager.state.sliderPositionEase) >= 1) this.generalManager.state.sliderPositionEase %= 1;
 		this.state.x1 = this.state.x2;
 		this.state.y1 = this.state.y2;
 	}

@@ -12,7 +12,8 @@ export default class GeneralManager {
 		this.slides = [
 			{
 				images: {
-					bg: { src: 'img/0.jpg', img: null },
+					bg: { src: 'img/0.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
 				},
 				originalIndex: null,
 				shadowIndex: null,
@@ -20,7 +21,8 @@ export default class GeneralManager {
 			},
 			{
 				images: {
-					bg: { src: 'img/1.jpg', img: null },
+					bg: { src: 'img/1.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
 				},
 				originalIndex: null,
 				shadowIndex: null,
@@ -28,7 +30,8 @@ export default class GeneralManager {
 			},
 			{
 				images: {
-					bg: { src: 'img/2.jpg', img: null },
+					bg: { src: 'img/2.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
 				},
 				originalIndex: null,
 				shadowIndex: null,
@@ -36,7 +39,8 @@ export default class GeneralManager {
 			},
 			{
 				images: {
-					bg: { src: 'img/3.jpg', img: null },
+					bg: { src: 'img/3.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
 				},
 				originalIndex: null,
 				shadowIndex: null,
@@ -44,7 +48,8 @@ export default class GeneralManager {
 			},
 			{
 				images: {
-					bg: { src: 'img/4.jpg', img: null },
+					bg: { src: 'img/4.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
 				},
 				originalIndex: null,
 				shadowIndex: null,
@@ -52,7 +57,8 @@ export default class GeneralManager {
 			},
 			{
 				images: {
-					bg: { src: 'img/5.jpg', img: null },
+					bg: { src: 'img/5.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
 				},
 				originalIndex: null,
 				shadowIndex: null,
@@ -60,7 +66,8 @@ export default class GeneralManager {
 			},
 			{
 				images: {
-					bg: { src: 'img/6.jpg', img: null },
+					bg: { src: 'img/6.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
 				},
 				originalIndex: null,
 				shadowIndex: null,
@@ -68,7 +75,8 @@ export default class GeneralManager {
 			},
 			{
 				images: {
-					bg: { src: 'img/7.jpg', img: null },
+					bg: { src: 'img/7.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
 				},
 				originalIndex: null,
 				shadowIndex: null,
@@ -76,7 +84,8 @@ export default class GeneralManager {
 			},
 			{
 				images: {
-					bg: { src: 'img/8.jpg', img: null },
+					bg: { src: 'img/8.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
 				},
 				originalIndex: null,
 				shadowIndex: null,
@@ -84,7 +93,8 @@ export default class GeneralManager {
 			},
 			{
 				images: {
-					bg: { src: 'img/9.jpg', img: null },
+					bg: { src: 'img/9.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
 				},
 				originalIndex: null,
 				shadowIndex: null,
@@ -92,7 +102,8 @@ export default class GeneralManager {
 			},
 			{
 				images: {
-					bg: { src: 'img/10.jpg', img: null },
+					bg: { src: 'img/10.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
 				},
 				originalIndex: null,
 				shadowIndex: null,
@@ -100,7 +111,116 @@ export default class GeneralManager {
 			},
 			{
 				images: {
-					bg: { src: 'img/11.jpg', img: null },
+					bg: { src: 'img/11.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/12.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/13.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/14.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/15.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/16.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/17.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/18.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/19.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/20.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/21.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/22.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
+				},
+				originalIndex: null,
+				shadowIndex: null,
+				slideManager: null,
+			},
+			{
+				images: {
+					bg: { src: 'img/23.jpg', img: null, isInited: false },
+					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
 				},
 				originalIndex: null,
 				shadowIndex: null,
@@ -134,7 +254,7 @@ export default class GeneralManager {
 					slideHeight: 300,
 					slideOrderNumberToOpacity: 5,
 					cameraPositionZ: 180,
-					scaleGap0: 1,
+					scaleGap0: 2.2,
 					scaleGap1: 1,
 					scaleGap2: 2.2,
 					scaleGap3: 3,
@@ -144,6 +264,14 @@ export default class GeneralManager {
 					scaleWidth2: 1,
 					scaleWidth3: 1,
 					scaleWidth4: 1,
+				},
+				{
+					minWidth: 376,
+					scaleGap0: 2.2,
+					scaleGap1: 1,
+					scaleGap2: 3.2,
+					scaleGap3: 4,
+					scaleGap4: 5,
 				},
 				{
 					minWidth: 600,
@@ -167,11 +295,11 @@ export default class GeneralManager {
 					slideWidth: 288,
 					slideHeight: 564,
 					slideOrderNumberToOpacity: 7,
-					scaleGap0: 4,
+					scaleGap0: 2.2,
 					scaleGap1: 6,
 					scaleGap2: 11,
 					scaleGap3: 16.9,
-					scaleGap4: 22,
+					scaleGap4: 19,
 					scaleWidth0: 1,
 					scaleWidth1: 1,
 					scaleWidth2: 1,
@@ -192,7 +320,7 @@ export default class GeneralManager {
 			timelinePosition: null,
 			slideWidth: 200,
 			slideHeight: 350,
-			slideOrderNumberToOpacity: 3,
+			slideOrderNumberToOpacity: 5,
 			slideGap: 50,
 			cameraPositionZ: 150,
 		};
@@ -210,6 +338,7 @@ export default class GeneralManager {
 			slideClick: [],
 			progress: [],
 			load: [],
+			slideOrderNumberToOpacity: [],
 		};
 
 		this.handlers = new Map([
@@ -324,12 +453,16 @@ export default class GeneralManager {
 	}
 
 	checkBreakpoints() {
+		let { slideOrderNumberToOpacity } = this.state;
+
 		this.settings.breakpoints.forEach((breakpoint) => {
 			if (this.width >= breakpoint.minWidth) {
 				if (breakpoint.slideWidth !== undefined) this.state.slideWidth = breakpoint.slideWidth;
 				if (breakpoint.slideHeight !== undefined) this.state.slideHeight = breakpoint.slideHeight;
-				if (breakpoint.slideOrderNumberToOpacity !== undefined)
-					this.state.slideOrderNumberToOpacity = breakpoint.slideOrderNumberToOpacity;
+				if (breakpoint.slideOrderNumberToOpacity !== undefined) {
+					slideOrderNumberToOpacity = breakpoint.slideOrderNumberToOpacity; //eslint-disable-line
+				}
+
 				if (breakpoint.scaleGap0 !== undefined) this.state.scaleGap0 = breakpoint.scaleGap0;
 				if (breakpoint.scaleGap1 !== undefined) this.state.scaleGap1 = breakpoint.scaleGap1;
 				if (breakpoint.scaleGap2 !== undefined) this.state.scaleGap2 = breakpoint.scaleGap2;
@@ -343,6 +476,11 @@ export default class GeneralManager {
 				if (breakpoint.cameraPositionZ !== undefined) this.state.cameraPositionZ = breakpoint.cameraPositionZ;
 			}
 		});
+
+		if (this.state.slideOrderNumberToOpacity !== slideOrderNumberToOpacity) {
+			this.state.slideOrderNumberToOpacity = slideOrderNumberToOpacity;
+			this.slideOrderNumberToOpacity(this.state.slideOrderNumberToOpacity);
+		}
 	}
 
 	resize() {
@@ -388,10 +526,17 @@ export default class GeneralManager {
 		this.managers.slides.toSlide(index, fast);
 	}
 
-	progress(progress, slideInfo) {
-		if (slideInfo.images.bg.img) slideInfo.slideManager.updateTexture(slideInfo.images.bg.img);
+	progress(progress, slideInfo, key) {
+		if (slideInfo.images[key].img && !slideInfo.images[key].isInited) {
+			slideInfo.images[key].isInited = true; //eslint-disable-line
+			slideInfo.slideManager.updateTexture(slideInfo.images[key].img, key);
+		}
 
 		this.eventCallbacks.progress.forEach((callback) => callback(progress));
+	}
+
+	slideOrderNumberToOpacity(slideOrderNumberToOpacity) {
+		this.eventCallbacks.slideOrderNumberToOpacity.forEach((callback) => callback(slideOrderNumberToOpacity));
 	}
 
 	load() {

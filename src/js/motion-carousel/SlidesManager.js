@@ -22,34 +22,72 @@ export default class SlidesManager {
 		this.handlers = {
 			create: this.create.bind(this),
 			tick: this.tick.bind(this),
+			slideOrderNumberToOpacity: this.slideOrderNumberToOpacity.bind(this),
 		};
 
 		this.generalManager.addListener('create', this.handlers.create);
 		this.generalManager.addListener('tick', this.handlers.tick);
+		this.generalManager.addListener('slideOrderNumberToOpacity', this.handlers.slideOrderNumberToOpacity);
 
 		this.state = {
 			normalPosition: 0,
 			oneSlideLength: null,
 			currentSlideIndex: 0,
+			rights: [],
+			lefts: [],
+			originalSlides: this.generalManager.slides,
 		};
 
-		const arrays = this.generalManager.slides.reduce(
-			(acc, slide, index) => {
-				slide.originalIndex = index; //eslint-disable-line
-				if (index % 2 === 0 && index !== 0) {
-					acc[1].push(slide);
-				} else {
-					acc[0].push(slide);
-				}
-				return acc;
-			},
-			[[], []]
-		);
-		this.generalManager.slides = [...arrays[0], ...arrays[1].reverse()];
+		this.sortingSlides();
 
+		this.generalManager.slides = this.state.normal;
 		this.generalManager.slides.forEach((slide, index) => {
 			slide.slideManager = new Slide(this.generalManager, index, slide.originalIndex); //eslint-disable-line
 			slide.shadowIndex = index; //eslint-disable-line
+		});
+
+		this.setLeftsRightsIndex();
+	}
+
+	slideOrderNumberToOpacity() {
+		this.sortingSlides();
+		this.setLeftsRightsIndex();
+	}
+
+	sortingSlides() {
+		const arrays = this.state.originalSlides.reduce(
+			({ normal, right, left }, slide, index) => {
+				slide.originalIndex = index; //eslint-disable-line
+				if (index % 2 === 0 && index !== 0) {
+					normal[1].push(slide);
+				} else {
+					normal[0].push(slide);
+				}
+				if (index % 2 === 0 && index !== 0 && index < this.generalManager.state.slideOrderNumberToOpacity) {
+					right[1].push(slide);
+				} else {
+					right[0].push(slide);
+				}
+				if ((index % 2 === 0 && index !== 0) || index >= this.generalManager.state.slideOrderNumberToOpacity) {
+					left[1].push(slide);
+				} else {
+					left[0].push(slide);
+				}
+				return { normal, right, left };
+			},
+			{ normal: [[], []], right: [[], []], left: [[], []] }
+		);
+		this.state.normal = [...arrays.normal[0], ...arrays.normal[1].reverse()];
+		this.state.rights = [...arrays.right[0], ...arrays.right[1].reverse()];
+		this.state.lefts = [...arrays.left[0], ...arrays.left[1].reverse()];
+	}
+
+	setLeftsRightsIndex() {
+		this.state.rights.forEach((slide, index) => {
+			slide.slideManager.shadowIndexRight = index; //eslint-disable-line
+		});
+		this.state.lefts.forEach((slide, index) => {
+			slide.slideManager.shadowIndexLeft = index; //eslint-disable-line
 		});
 	}
 
@@ -76,13 +114,22 @@ export default class SlidesManager {
 				(Math.floor(Math.abs(direction) / (this.generalManager.slides.length + 0.001)) + 1) *
 					this.generalManager.slides.length;
 		}
+		if (this.state.direction === 'normal') {
+			this.state.currentSlideIndex = Math.abs(this.state.currentSlideIndex);
+		}
+		if (this.state.direction === 'right') {
+			this.state.currentSlideIndex = this.state.rights[this.state.currentSlideIndex].shadowIndex;
+		}
+		if (this.state.direction === 'left') {
+			this.state.currentSlideIndex = this.state.lefts[this.state.currentSlideIndex].shadowIndex;
+		}
 	}
 
 	toSlide(toSlideIndex, fast) {
 		if (this.generalManager.state.timelinePosition) this.generalManager.state.timelinePosition.pause();
 		const x =
 			this.generalManager.state.sliderPositionEase -
-			(this.generalManager.slides[toSlideIndex].slideManager.mesh.position.x -
+			(this.generalManager.slides[toSlideIndex].slideManager.state.bg.mesh.position.x -
 				this.getSlideGapByOrder(this.generalManager.slides[toSlideIndex].slideManager.orderNumber)) /
 				this.generalManager.state.slideWidth /
 				this.generalManager.slides.length;
@@ -98,11 +145,26 @@ export default class SlidesManager {
 
 	updatePos(sliderPosition = 0) {
 		this.state.normalPosition = sliderPosition;
-		if (Math.abs(this.state.normalPosition) > 1) this.state.normalPosition %= 1;
-
-		this.generalManager.slides.forEach(({ slideManager }, index) => {
+		// const before = this.state.normalPosition;
+		if (Math.abs(this.state.normalPosition) >= 1) this.state.normalPosition %= 1;
+		// console.log(before, this.state.normalPosition);
+		this.generalManager.slides.forEach(({ slideManager }) => {
 			if (!slideManager) return;
-
+			// console.log(slideManager.shadowIndexRight);
+			let index = slideManager.id;
+			this.state.direction = 'normal';
+			if (this.state.normalPosition < 0) {
+				index = slideManager.shadowIndexRight;
+				this.state.direction = 'right';
+			}
+			if (this.state.normalPosition > 0) {
+				index = slideManager.shadowIndexLeft;
+				this.state.direction = 'left';
+			}
+			// shadowIndexRight
+			// const index = this.state.normalPosition > 0 ? slideManager.id : slideManager.originalId;
+			// const index = slideManager.id;
+			// console.log(index, slideManager.id);
 			let x;
 			x = this.state.oneSlideLength * index + this.state.normalPosition;
 			if (x > 0.5) x -= 1;
