@@ -13,6 +13,7 @@ void main() {
 	vec2 offset = (rs < ri ? vec2((new.x - s.x) / 2.0, 0.0) : vec2(0.0, (new.y - s.y) / 2.0)) / new;
 	vec2 uv = vUv * s / new + offset;
 	vec4 clr = texture2D(uImage, uv);
-	clr.a = uOpacity;
+	clr.a = clr.a * uOpacity;
 	gl_FragColor = clr;
+	// if(gl_FragColor.a<0.5) discard;
 }

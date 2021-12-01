@@ -23,11 +23,15 @@ export default class SlidesManager {
 			create: this.create.bind(this),
 			tick: this.tick.bind(this),
 			slideOrderNumberToOpacity: this.slideOrderNumberToOpacity.bind(this),
+			// startDrag: this.startDrag.bind(this),
+			// stopDrag: this.stopDrag.bind(this),
 		};
 
 		this.generalManager.addListener('create', this.handlers.create);
 		this.generalManager.addListener('tick', this.handlers.tick);
 		this.generalManager.addListener('slideOrderNumberToOpacity', this.handlers.slideOrderNumberToOpacity);
+		// this.generalManager.addListener('startDrag', this.handlers.startDrag);
+		// this.generalManager.addListener('stopDrag', this.handlers.stopDrag);
 
 		this.state = {
 			normalPosition: 0,
@@ -48,6 +52,14 @@ export default class SlidesManager {
 
 		this.setLeftsRightsIndex();
 	}
+
+	// startDrag(index) {
+	// 	this.state.originalSlides[index].slideManager.becomeDefault();
+	// }
+
+	// stopDrag(index) {
+	// 	this.state.originalSlides[index].slideManager.becomeBig();
+	// }
 
 	slideOrderNumberToOpacity() {
 		this.sortingSlides();
@@ -136,9 +148,16 @@ export default class SlidesManager {
 
 		const duration = 0.5;
 
+		this.generalManager.becomeDefault();
+
 		this.generalManager.state.timelinePosition = gsap
 			.timeline()
-			.to(this.generalManager.state, { sliderPositionEase: x, duration, ease: Power3.easeInOut });
+			.to(this.generalManager.state, { sliderPositionEase: x, duration, ease: Power3.easeInOut }, 0)
+			.to(
+				this.generalManager.state,
+				{ duration: duration * 0.7, onComplete: this.generalManager.becomeBig.bind(this.generalManager) },
+				0
+			);
 
 		if (fast) this.generalManager.state.sliderPositionEase = this.generalManager.state.sliderPosition;
 	}
@@ -173,7 +192,7 @@ export default class SlidesManager {
 			if (x < -0.5) x += 1;
 
 			const orderNumber = Number(x * this.generalManager.slides.length);
-			if (Math.abs(orderNumber) > this.generalManager.state.slideOrderNumberToOpacity) {
+			if (Math.abs(orderNumber) > this.generalManager.state.slideOrderNumberToOpacity / 1.8) {
 				slideManager.hide();
 				return;
 			}

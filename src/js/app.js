@@ -22,6 +22,6 @@ mc.addListener('create', () => console.log('create')); // eslint-disable-line
 mc.addListener('destroy', () => console.log('destroy')); // eslint-disable-line
 mc.addListener('startDrag', (i) => console.log('startDrag', i)); // eslint-disable-line
 mc.addListener('stopDrag', (i) => console.log('stopDrag', i)); // eslint-disable-line
-mc.addListener('slideClick', (i) => console.log('slideClick', i)); // eslint-disable-line
+mc.addListener('slideClick', (i, prev) => console.log('slideClick', i, prev)); // eslint-disable-line
 mc.addListener('progress', (p) => console.log('progress', p)); // eslint-disable-line
 mc.addListener('load', () => console.log('load')); // eslint-disable-line

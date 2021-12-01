@@ -103,7 +103,8 @@ export default class DragManager {
 			this.pointerup(event);
 		}
 
-		if (this.state.tmpIsPointerdown !== this.state.isPointerdown && Math.abs(this.state.x0 - this.state.x2) > 0) {
+		// if (this.state.tmpIsPointerdown !== this.state.isPointerdown && Math.abs(this.state.x0 - this.state.x2) > 0) {
+		if (this.state.isMovedX && this.state.isDragStarted !== this.state.isPointerdown) {
 			this.generalManager.startDrag();
 			this.state.isDragStarted = true;
 		}
@@ -212,16 +213,31 @@ export default class DragManager {
 
 	getIsMouseIntersect() {
 		const intersects = this.getIntersects();
-		return intersects[0] && intersects[0].object.isMesh && intersects[0].object.userData.id !== undefined;
+		return (
+			intersects &&
+			intersects.filter((intersect) => intersect.object.isMesh && intersect.object.userData.id !== undefined).length
+		);
+	}
+
+	getMouseIntersectId() {
+		const intersects = this.getIntersects();
+		return intersects.filter((intersect) => intersect.object.isMesh && intersect.object.userData.id !== undefined)[0]
+			.object.userData.id;
 	}
 
 	click() {
-		const intersects = this.getIntersects();
-		if (intersects[0] && intersects[0].object.isMesh && intersects[0].object.userData.id !== undefined) {
+		if (this.getIsMouseIntersect()) {
 			this.state.isClicked = true;
 			this.state.delta = 0;
-			this.generalManager.slideClick(intersects[0].object.userData.id);
+			this.generalManager.slideClick(this.getMouseIntersectId());
 			this.state.isDragStarted = false;
 		}
+		// const intersects = this.getIntersects();
+		// if (intersects[0] && intersects[0].object.isMesh && intersects[0].object.userData.id !== undefined) {
+		// 	this.state.isClicked = true;
+		// 	this.state.delta = 0;
+		// 	this.generalManager.slideClick(intersects[0].object.userData.id);
+		// 	this.state.isDragStarted = false;
+		// }
 	}
 }

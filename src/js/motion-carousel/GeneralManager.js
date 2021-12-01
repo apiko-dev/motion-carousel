@@ -12,8 +12,10 @@ export default class GeneralManager {
 		this.slides = [
 			{
 				images: {
-					bg: { src: 'img/0.jpg', img: null, isInited: false },
+					bg: { src: 'img/bg-1.jpg', img: null, isInited: false },
 					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
+					hero: { src: 'img/hero-1v8.png', img: null, isInited: false },
+					text: { src: 'img/text-1.png', img: null, isInited: false },
 				},
 				originalIndex: null,
 				shadowIndex: null,
@@ -21,8 +23,10 @@ export default class GeneralManager {
 			},
 			{
 				images: {
-					bg: { src: 'img/1.jpg', img: null, isInited: false },
+					bg: { src: 'img/bg-1.jpg', img: null, isInited: false },
 					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
+					hero: { src: 'img/hero-1v8.png', img: null, isInited: false },
+					text: { src: 'img/text-1.png', img: null, isInited: false },
 				},
 				originalIndex: null,
 				shadowIndex: null,
@@ -30,8 +34,10 @@ export default class GeneralManager {
 			},
 			{
 				images: {
-					bg: { src: 'img/2.jpg', img: null, isInited: false },
+					bg: { src: 'img/bg-1.jpg', img: null, isInited: false },
 					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
+					hero: { src: 'img/hero-2.png', img: null, isInited: false },
+					text: { src: 'img/text-2.png', img: null, isInited: false },
 				},
 				originalIndex: null,
 				shadowIndex: null,
@@ -323,6 +329,7 @@ export default class GeneralManager {
 			slideOrderNumberToOpacity: 5,
 			slideGap: 50,
 			cameraPositionZ: 150,
+			maxScaleToBig: 1.5,
 		};
 
 		this.eventCallbacks = {
@@ -415,6 +422,14 @@ export default class GeneralManager {
 		);
 	}
 
+	becomeDefault() {
+		this.slides.forEach(({ slideManager }) => slideManager.state.isBig && slideManager.becomeDefault());
+	}
+
+	becomeBig() {
+		this.slides[this.currentSlideShadowIndex].slideManager.becomeBig();
+	}
+
 	addListener(event, callback) {
 		if (!this.eventCallbacks[event] || this.eventCallbacks[event].includes(callback)) return;
 
@@ -474,6 +489,7 @@ export default class GeneralManager {
 				if (breakpoint.scaleWidth3 !== undefined) this.state.scaleWidth3 = breakpoint.scaleWidth3;
 				if (breakpoint.scaleWidth4 !== undefined) this.state.scaleWidth4 = breakpoint.scaleWidth4;
 				if (breakpoint.cameraPositionZ !== undefined) this.state.cameraPositionZ = breakpoint.cameraPositionZ;
+				if (breakpoint.maxScaleToBig !== undefined) this.state.maxScaleToBig = breakpoint.maxScaleToBig;
 			}
 		});
 
@@ -503,17 +519,25 @@ export default class GeneralManager {
 	}
 
 	startDrag() {
+		this.becomeDefault();
 		this.eventCallbacks.startDrag.forEach((callback) => callback(this.currentSlideIndex));
 	}
 
 	stopDrag() {
+		this.becomeBig();
 		this.eventCallbacks.stopDrag.forEach((callback) => callback(this.currentSlideIndex));
 	}
 
 	slideClick(shadowIndex) {
+		const prevIndex = this.currentSlideShadowIndex;
+		if (shadowIndex === prevIndex) return;
+
 		this.managers.slides.toSlide(shadowIndex);
 
-		this.eventCallbacks.slideClick.forEach((callback) => callback(this.slides[shadowIndex].originalIndex));
+		// this.slides[prevIndex].slideManager.becomeDefault();
+		// this.slides[shadowIndex].slideManager.becomeBig();
+
+		this.eventCallbacks.slideClick.forEach((callback) => callback(this.slides[shadowIndex].originalIndex, prevIndex));
 	}
 
 	toSlide(originalIndex, fast) {
@@ -522,6 +546,9 @@ export default class GeneralManager {
 			return;
 		}
 		const index = this.slides.filter((slide) => slide.originalIndex === originalIndex)[0].shadowIndex;
+
+		// this.slides[this.currentSlideShadowIndex].slideManager.becomeDefault();
+		// this.slides[index].slideManager.becomeBig();
 
 		this.managers.slides.toSlide(index, fast);
 	}

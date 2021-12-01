@@ -28,7 +28,7 @@ export default class ThreeManager {
 			this.fov,
 			this.generalManager.width / this.generalManager.height,
 			1,
-			10000
+			1000
 		);
 		this.camera.position.z = this.generalManager.state.cameraPositionZ;
 		this.renderer = new THREE.WebGLRenderer({ alpha: true });
