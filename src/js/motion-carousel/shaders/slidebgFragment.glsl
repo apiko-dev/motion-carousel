@@ -5,8 +5,8 @@ uniform vec2 uBGSize;
 uniform float uOpacity;
 
 void main() {
-	vec2 s = uScreenSize; // Screen
-	vec2 i = uBGSize; // Image
+	vec2 s = uScreenSize;
+	vec2 i = uBGSize;
 	float rs = s.x / s.y;
 	float ri = i.x / i.y;
 	vec2 new = rs < ri ? vec2(i.x * s.y / i.y, s.y) : vec2(s.x, i.y * s.x / i.x);
@@ -15,5 +15,4 @@ void main() {
 	vec4 clr = texture2D(uImage, uv);
 	clr.a = clr.a * uOpacity;
 	gl_FragColor = clr;
-	// if(gl_FragColor.a<0.5) discard;
 }

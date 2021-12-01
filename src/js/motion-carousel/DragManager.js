@@ -14,6 +14,8 @@ export default class DragManager {
 			direction: null,
 			pointerType: null,
 			isDragStarted: false,
+			isStop: true,
+			tmpIsStop: true,
 
 			x0: 0,
 			x1: 0,
@@ -232,12 +234,5 @@ export default class DragManager {
 			this.generalManager.slideClick(this.getMouseIntersectId());
 			this.state.isDragStarted = false;
 		}
-		// const intersects = this.getIntersects();
-		// if (intersects[0] && intersects[0].object.isMesh && intersects[0].object.userData.id !== undefined) {
-		// 	this.state.isClicked = true;
-		// 	this.state.delta = 0;
-		// 	this.generalManager.slideClick(intersects[0].object.userData.id);
-		// 	this.state.isDragStarted = false;
-		// }
 	}
 }

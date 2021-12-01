@@ -1,6 +1,7 @@
 import Stats from 'stats-js';
 import sayHello from './lib/sayHello';
 import MotionCarousel from './motion-carousel';
+import slides from './motion-carousel/slides';
 
 sayHello();
 
@@ -15,7 +16,7 @@ function animate() {
 
 requestAnimationFrame(animate);
 
-const mc = new MotionCarousel({ container: document.getElementById('motion-carousel-container') });
+const mc = new MotionCarousel({ container: document.getElementById('motion-carousel-container'), slides });
 
 mc.addListener('resize', () => console.log('resize')); // eslint-disable-line
 mc.addListener('create', () => console.log('create')); // eslint-disable-line

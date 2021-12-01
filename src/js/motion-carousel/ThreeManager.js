@@ -4,11 +4,6 @@ export default class ThreeManager {
 	constructor(generalManager) {
 		this.generalManager = generalManager;
 
-		// this.setings = {
-		// 	// cameraPositionZ: 210,
-		// 	cameraPositionZ: 130,
-		// };
-
 		this.handlers = {
 			create: this.create.bind(this),
 			destroy: this.destroy.bind(this),
@@ -28,7 +23,7 @@ export default class ThreeManager {
 			this.fov,
 			this.generalManager.width / this.generalManager.height,
 			1,
-			1000
+			2000
 		);
 		this.camera.position.z = this.generalManager.state.cameraPositionZ;
 		this.renderer = new THREE.WebGLRenderer({ alpha: true });

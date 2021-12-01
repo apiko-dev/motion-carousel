@@ -9,230 +9,7 @@ export default class GeneralManager {
 			container: props.container,
 		};
 
-		this.slides = [
-			{
-				images: {
-					bg: { src: 'img/bg-1.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-					hero: { src: 'img/hero-1v8.png', img: null, isInited: false },
-					text: { src: 'img/text-1.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/bg-1.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-					hero: { src: 'img/hero-1v8.png', img: null, isInited: false },
-					text: { src: 'img/text-1.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/bg-1.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-					hero: { src: 'img/hero-2.png', img: null, isInited: false },
-					text: { src: 'img/text-2.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/3.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/4.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/5.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/6.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/7.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/8.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/9.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/10.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/11.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/12.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/13.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/14.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/15.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/16.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/17.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/18.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/19.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/20.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/21.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/22.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-			{
-				images: {
-					bg: { src: 'img/23.jpg', img: null, isInited: false },
-					shadow: { src: 'img/shadow-8.png', img: null, isInited: false },
-				},
-				originalIndex: null,
-				shadowIndex: null,
-				slideManager: null,
-			},
-		];
+		this.slides = props.slides;
 
 		this.settings = {
 			breakpoints: [
@@ -390,6 +167,8 @@ export default class GeneralManager {
 
 		this.eventCallbacks.create.forEach((callback) => callback());
 
+		this.becomeBig();
+
 		window.requestAnimationFrame(this.tick.bind(this));
 	}
 
@@ -439,12 +218,6 @@ export default class GeneralManager {
 	removeListener(event, callback) {
 		this.eventCallbacks[event] = this.eventCallbacks[event].filter((oldCallback) => callback !== oldCallback);
 	}
-
-	// removeAllListeners() {
-	// 	Object.entries(this.eventCallbacks).forEach(([event, callbacks]) =>
-	// 		callbacks.forEach((callback) => this.removeListener(event, callback))
-	// 	);
-	// }
 
 	get width() {
 		return this.state._width;
@@ -529,15 +302,13 @@ export default class GeneralManager {
 	}
 
 	slideClick(shadowIndex) {
-		const prevIndex = this.currentSlideShadowIndex;
-		if (shadowIndex === prevIndex) return;
+		if (shadowIndex === this.currentSlideShadowIndex) return;
 
 		this.managers.slides.toSlide(shadowIndex);
 
-		// this.slides[prevIndex].slideManager.becomeDefault();
-		// this.slides[shadowIndex].slideManager.becomeBig();
-
-		this.eventCallbacks.slideClick.forEach((callback) => callback(this.slides[shadowIndex].originalIndex, prevIndex));
+		this.eventCallbacks.slideClick.forEach((callback) =>
+			callback(this.slides[shadowIndex].originalIndex, this.currentSlideIndex)
+		);
 	}
 
 	toSlide(originalIndex, fast) {
@@ -546,9 +317,6 @@ export default class GeneralManager {
 			return;
 		}
 		const index = this.slides.filter((slide) => slide.originalIndex === originalIndex)[0].shadowIndex;
-
-		// this.slides[this.currentSlideShadowIndex].slideManager.becomeDefault();
-		// this.slides[index].slideManager.becomeBig();
 
 		this.managers.slides.toSlide(index, fast);
 	}
@@ -574,8 +342,6 @@ export default class GeneralManager {
 		if (!this.state.isCreated) return;
 
 		this.state.time += 1;
-
-		// this.state.sliderPositionEase += 0.05 * (this.state.sliderPosition - this.state.sliderPositionEase);
 
 		this.eventCallbacks.tick.forEach((callback) => callback(this.state.time));
 

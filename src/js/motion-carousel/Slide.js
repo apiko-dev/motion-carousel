@@ -39,8 +39,9 @@ export default class Slide {
 
 		this.isHided = true;
 		this.generalManager.managers.three.scene.remove(this.state.bg.mesh);
-		this.generalManager.managers.three.scene.remove(this.state.shadow.nesh);
-		this.generalManager.managers.three.scene.remove(this.state.hero.nesh);
+		this.generalManager.managers.three.scene.remove(this.state.shadow.mesh);
+		this.generalManager.managers.three.scene.remove(this.state.hero.mesh);
+		this.generalManager.managers.three.scene.remove(this.state.text.mesh);
 	}
 
 	show() {
@@ -50,6 +51,7 @@ export default class Slide {
 		this.generalManager.managers.three.scene.add(this.state.bg.mesh);
 		this.generalManager.managers.three.scene.add(this.state.shadow.mesh);
 		this.generalManager.managers.three.scene.add(this.state.hero.mesh);
+		this.generalManager.managers.three.scene.add(this.state.text.mesh);
 	}
 
 	create() {
@@ -64,12 +66,9 @@ export default class Slide {
 				uBGSize: { value: new THREE.Vector2() },
 				uOpacity: {},
 			},
-			side: THREE.DoubleSide,
 			fragmentShader: slidebgFragment,
 			vertexShader: slidebgVertex,
 			transparent: true,
-			// depthTest: true,
-			// alphaTest: 0.5,
 		});
 
 		this.state.hero.material = new THREE.ShaderMaterial({
@@ -79,12 +78,10 @@ export default class Slide {
 				uBGSize: { value: new THREE.Vector2() },
 				uOpacity: {},
 			},
-			side: THREE.DoubleSide,
 			fragmentShader: slidebgFragment,
 			vertexShader: slidebgVertex,
 			transparent: true,
 			depthTest: false,
-			// alphaTest: 0.5,
 		});
 
 		this.state.text.material = new THREE.ShaderMaterial({
@@ -94,12 +91,10 @@ export default class Slide {
 				uBGSize: { value: new THREE.Vector2() },
 				uOpacity: { value: 0 },
 			},
-			side: THREE.DoubleSide,
 			fragmentShader: slidebgFragment,
 			vertexShader: slidebgVertex,
 			transparent: true,
 			depthTest: false,
-			// alphaTest: 0.5,
 		});
 
 		this.state.bg.mesh = new THREE.Mesh(this.state.bg.geometry, this.state.bg.material);

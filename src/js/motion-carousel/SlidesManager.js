@@ -23,15 +23,11 @@ export default class SlidesManager {
 			create: this.create.bind(this),
 			tick: this.tick.bind(this),
 			slideOrderNumberToOpacity: this.slideOrderNumberToOpacity.bind(this),
-			// startDrag: this.startDrag.bind(this),
-			// stopDrag: this.stopDrag.bind(this),
 		};
 
 		this.generalManager.addListener('create', this.handlers.create);
 		this.generalManager.addListener('tick', this.handlers.tick);
 		this.generalManager.addListener('slideOrderNumberToOpacity', this.handlers.slideOrderNumberToOpacity);
-		// this.generalManager.addListener('startDrag', this.handlers.startDrag);
-		// this.generalManager.addListener('stopDrag', this.handlers.stopDrag);
 
 		this.state = {
 			normalPosition: 0,
@@ -52,14 +48,6 @@ export default class SlidesManager {
 
 		this.setLeftsRightsIndex();
 	}
-
-	// startDrag(index) {
-	// 	this.state.originalSlides[index].slideManager.becomeDefault();
-	// }
-
-	// stopDrag(index) {
-	// 	this.state.originalSlides[index].slideManager.becomeBig();
-	// }
 
 	slideOrderNumberToOpacity() {
 		this.sortingSlides();
@@ -164,26 +152,24 @@ export default class SlidesManager {
 
 	updatePos(sliderPosition = 0) {
 		this.state.normalPosition = sliderPosition;
-		// const before = this.state.normalPosition;
 		if (Math.abs(this.state.normalPosition) >= 1) this.state.normalPosition %= 1;
-		// console.log(before, this.state.normalPosition);
+
 		this.generalManager.slides.forEach(({ slideManager }) => {
 			if (!slideManager) return;
-			// console.log(slideManager.shadowIndexRight);
+
 			let index = slideManager.id;
 			this.state.direction = 'normal';
+
 			if (this.state.normalPosition < 0) {
 				index = slideManager.shadowIndexRight;
 				this.state.direction = 'right';
 			}
+
 			if (this.state.normalPosition > 0) {
 				index = slideManager.shadowIndexLeft;
 				this.state.direction = 'left';
 			}
-			// shadowIndexRight
-			// const index = this.state.normalPosition > 0 ? slideManager.id : slideManager.originalId;
-			// const index = slideManager.id;
-			// console.log(index, slideManager.id);
+
 			let x;
 			x = this.state.oneSlideLength * index + this.state.normalPosition;
 			if (x > 0.5) x -= 1;
