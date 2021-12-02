@@ -3,6 +3,7 @@ uniform sampler2D uImage;
 uniform vec2 uScreenSize;
 uniform vec2 uBGSize;
 uniform float uOpacity;
+uniform float uGrayScale;
 
 void main() {
 	vec2 s = uScreenSize;
@@ -14,5 +15,47 @@ void main() {
 	vec2 uv = vUv * s / new + offset;
 	vec4 clr = texture2D(uImage, uv);
 	clr.a = clr.a * uOpacity;
-	gl_FragColor = clr;
+
+	vec4 gray = vec4(vec3(dot(clr.rgb, vec3(0.1, 0.1, 0.4))), clr.a);
+	gl_FragColor = mix(clr, gray, uGrayScale);
+
+	/////
+	// float samples = 10.0;
+	// vec2 direction = vec2(0.866/(vUv.x/vUv.y), 0.5);
+	// float bokeh = 0.2;
+	
+	// vec4 sum = vec4(0.0); //результирующий цвет
+	// vec4 msum = vec4(0.0); //максимальное значение цвета выборок
+	
+	// float delta = 1.0/samples; //порция цвета в одной выборке
+	// float di = 1.0/(samples-1.0); //вычисляем инкремент
+	// for (float i=-0.5; i<0.501; i+=di) {
+	// 	vec4 color = texture2D(uImage, uVu + direction * i); //делаем выборку в заданном направлении
+	// 	sum += color * delta; //суммируем цвет
+	// 	msum = max(color, msum); //вычисляем максимальное значение цвета
+	// }
+
+	// gl_FragColor = mix(sum, msum, bokeh);
 }
+
+// uniform sampler2D texture; //размываемая текстура
+// uniform vec2 direction; //направление размытия, всего их три: (0, 1), (0.866/aspect, 0.5), (0.866/aspect, -0.5), все три направления необходимо умножить на желаемый радиус размытия
+// uniform float samples; //количество выборок, float - потому что операции над этим параметром вещественные
+// uniform float bokeh; //сила эффекта боке [0..1]
+
+// varying vec2 vTexCoord; //входные текстурные координаты фрагмента
+
+// void main() {
+// 	vec4 sum = vec4(0.0); //результирующий цвет
+// 	vec4 msum = vec4(0.0); //максимальное значение цвета выборок
+
+// 	float delta = 1.0/samples; //порция цвета в одной выборке
+// 	float di = 1.0/(samples-1.0); //вычисляем инкремент
+// 	for (float i=-0.5; i<0.501; i+=di) {
+// 		vec4 color = texture2D(texture, vTexCoord + direction * i); //делаем выборку в заданном направлении
+// 		sum += color * delta; //суммируем цвет
+// 		msum = max(color, msum); //вычисляем максимальное значение цвета
+// 	}
+
+// 	gl_FragColor = mix(sum, msum, bokeh); //смешиваем результирующий цвет с максимальным в заданной пропорции
+// }

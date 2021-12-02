@@ -178,7 +178,7 @@ export default class SlidesManager {
 			if (x < -0.5) x += 1;
 
 			const orderNumber = Number(x * this.generalManager.slides.length);
-			if (Math.abs(orderNumber) > this.generalManager.state.slideOrderNumberToOpacity / 1.8) {
+			if (Math.abs(orderNumber) > this.generalManager.state.slideOrderNumberToOpacity / 1.75) {
 				slideManager.hide();
 				return;
 			}
@@ -202,16 +202,23 @@ export default class SlidesManager {
 			if (Math.abs(orderNumber) >= Math.floor(this.generalManager.state.slideOrderNumberToOpacity / 2) + 1) {
 				opacity = 0;
 			}
-
-			const sin = Math.sin(x * 1.5 * Math.PI);
-			const angle = 0.15 * Math.sign(sin) * Math.abs(sin) ** 1.3;
+			let greyScale = 0;
+			if (Math.abs(orderNumber) >= 0 && Math.abs(orderNumber) <= 1) {
+				greyScale = Math.abs(orderNumber);
+			}
+			if (Math.abs(orderNumber) > 1) {
+				greyScale = 1;
+			}
+			const sin = Math.sin(x * 1.65 * Math.PI);
+			const angle = 0.19 * Math.sign(sin) * Math.abs(sin) ** 1.3;
 
 			slideManager.updatePos(
 				x * this.generalManager.state.slideWidth * this.generalManager.state.slideOrderNumberToOpacity +
 					this.getSlideGapByOrder(orderNumber, index),
-				z * this.generalManager.state.slideWidth * this.generalManager.state.slideOrderNumberToOpacity * 1.3,
+				(z * this.generalManager.state.slideWidth * this.generalManager.state.slideOrderNumberToOpacity) / 1.7,
 				angle,
-				opacity
+				opacity,
+				greyScale
 			);
 
 			slideManager.updateWidthHeight(

@@ -7,6 +7,8 @@ import slidebgFragment from './shaders/slidebgFragment.glsl';
 import shadowVertex from './shaders/shadowVertex.glsl';
 import shadowFragment from './shaders/shadowFragment.glsl';
 
+import textFragment from './shaders/textFragment.glsl';
+
 export default class Slide {
 	constructor(generalManager, id, originalId) {
 		this.generalManager = generalManager;
@@ -65,6 +67,7 @@ export default class Slide {
 				uScreenSize: { value: new THREE.Vector2() },
 				uBGSize: { value: new THREE.Vector2() },
 				uOpacity: {},
+				uGrayScale: {},
 			},
 			fragmentShader: slidebgFragment,
 			vertexShader: slidebgVertex,
@@ -77,6 +80,7 @@ export default class Slide {
 				uScreenSize: { value: new THREE.Vector2() },
 				uBGSize: { value: new THREE.Vector2() },
 				uOpacity: {},
+				uGrayScale: {},
 			},
 			fragmentShader: slidebgFragment,
 			vertexShader: slidebgVertex,
@@ -91,7 +95,7 @@ export default class Slide {
 				uBGSize: { value: new THREE.Vector2() },
 				uOpacity: { value: 0 },
 			},
-			fragmentShader: slidebgFragment,
+			fragmentShader: textFragment,
 			vertexShader: slidebgVertex,
 			transparent: true,
 			depthTest: false,
@@ -120,6 +124,7 @@ export default class Slide {
 			fragmentShader: shadowFragment,
 			vertexShader: shadowVertex,
 			transparent: true,
+			depthTest: false,
 		});
 
 		this.state.shadow.mesh = new THREE.Mesh(this.state.shadow.geometry, this.state.shadow.material);
@@ -137,7 +142,7 @@ export default class Slide {
 		texture.needsUpdate = true;
 	}
 
-	updatePos(x, z, angle, opacity) {
+	updatePos(x, z, angle, opacity, greyScale) {
 		this.state.text.mesh.position.set(
 			x,
 			0,
@@ -159,6 +164,8 @@ export default class Slide {
 		this.state.bg.material.uniforms.uOpacity.value = opacity;
 		this.state.hero.material.uniforms.uOpacity.value = opacity;
 		this.state.shadow.material.uniforms.uOpacity.value = opacity;
+		this.state.bg.material.uniforms.uGrayScale.value = greyScale;
+		this.state.hero.material.uniforms.uGrayScale.value = greyScale;
 	}
 
 	becomeBig() {
@@ -180,13 +187,29 @@ export default class Slide {
 	}
 
 	updateContainerUniform() {
+		// this.state.bg.material.uniforms.uScreenSize.value = new THREE.Vector2(
+		// 	this.state.bg.mesh.scale.x,
+		// 	this.state.bg.mesh.scale.y
+		// );
+		// this.state.hero.material.uniforms.uScreenSize.value = new THREE.Vector2(
+		// 	this.state.hero.mesh.scale.x,
+		// 	this.state.hero.mesh.scale.y
+		// );
+		// this.state.text.material.uniforms.uScreenSize.value = new THREE.Vector2(
+		// 	this.state.text.mesh.scale.x,
+		// 	this.state.text.mesh.scale.y
+		// );
+		// this.state.shadow.material.uniforms.uScreenSize.value = new THREE.Vector2(
+		// 	this.state.shadow.mesh.scale.x,
+		// 	this.state.shadow.mesh.scale.y
+		// );
 		this.state.bg.material.uniforms.uScreenSize.value = new THREE.Vector2(
-			this.state.bg.mesh.scale.x,
-			this.state.bg.mesh.scale.y
+			this.generalManager.state.slideWidth,
+			this.generalManager.state.slideHeight
 		);
 		this.state.hero.material.uniforms.uScreenSize.value = new THREE.Vector2(
-			this.state.hero.mesh.scale.x,
-			this.state.hero.mesh.scale.y
+			this.generalManager.state.slideWidth,
+			this.generalManager.state.slideHeight
 		);
 		this.state.text.material.uniforms.uScreenSize.value = new THREE.Vector2(
 			this.state.text.mesh.scale.x,
