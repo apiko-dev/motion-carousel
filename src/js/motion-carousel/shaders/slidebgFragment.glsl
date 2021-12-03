@@ -16,12 +16,21 @@ void main() {
 	vec4 clr = texture2D(uImage, uv);
 	clr.a = clr.a * uOpacity;
 
-	vec4 gray = vec4(vec3(dot(clr.rgb, vec3(0.1, 0.1, 0.4))), clr.a);
+	vec4 gray = vec4(vec3(dot(clr.rgb, vec3(0.1, 0.1, 0.2))), clr.a);
+	// gl_FragColor = mix(clr, gray, uGrayScale);
+	gray.r *= 0.8;
+	gray.g *= 0.85;
+	// gray.b *= 0.9;
+	// gl_FragColor = gray;
 	gl_FragColor = mix(clr, gray, uGrayScale);
 
+	gl_FragColor.rgb *= min(vUv.y * 1.5, 1.0);
+	// gl_FragColor = vec4(clr.r * 0.5, clr.g * 0.5, clr.b * 0.5, clr.a);
+	// if(gl_FragColor.a<0.5) discard;
 	/////
-	// float samples = 10.0;
-	// vec2 direction = vec2(0.866/(vUv.x/vUv.y), 0.5);
+	// float samples = 1.0;
+	// // vec2 direction = vec2(0.0, 1.0);
+	// vec2 direction = vec2(0.866/(vUv.x / vUv.y), 0.5);
 	// float bokeh = 0.2;
 	
 	// vec4 sum = vec4(0.0); //результирующий цвет
@@ -29,13 +38,14 @@ void main() {
 	
 	// float delta = 1.0/samples; //порция цвета в одной выборке
 	// float di = 1.0/(samples-1.0); //вычисляем инкремент
-	// for (float i=-0.5; i<0.501; i+=di) {
-	// 	vec4 color = texture2D(uImage, uVu + direction * i); //делаем выборку в заданном направлении
+	// float i=-0.2;
+	// // for (float i=-0.5; i<0.501; i+=di) {
+	// 	vec4 color = texture2D(uImage, vUv + direction * i); //делаем выборку в заданном направлении
 	// 	sum += color * delta; //суммируем цвет
 	// 	msum = max(color, msum); //вычисляем максимальное значение цвета
-	// }
+	// // }
 
-	// gl_FragColor = mix(sum, msum, bokeh);
+	// gl_FragColor = vec4(vec3(mix(sum.rgb, msum.rgb, bokeh)), color.a);
 }
 
 // uniform sampler2D texture; //размываемая текстура

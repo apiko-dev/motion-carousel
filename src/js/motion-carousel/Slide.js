@@ -86,6 +86,8 @@ export default class Slide {
 			vertexShader: slidebgVertex,
 			transparent: true,
 			depthTest: false,
+			depthWrite: false,
+			// alphaTest: 0.5,
 		});
 
 		this.state.text.material = new THREE.ShaderMaterial({
@@ -99,7 +101,23 @@ export default class Slide {
 			vertexShader: slidebgVertex,
 			transparent: true,
 			depthTest: false,
+			depthWrite: false,
+			// alphaTest: 0.5,
 		});
+		// this.state.text.material = new THREE.ShaderMaterial({
+		// 	uniforms: {
+		// 		uImage: {},
+		// 		uScreenSize: { value: new THREE.Vector2() },
+		// 		uBGSize: { value: new THREE.Vector2() },
+		// 		uOpacity: { value: 0 },
+		// 	},
+		// 	fragmentShader: textFragment,
+		// 	vertexShader: slidebgVertex,
+		// 	transparent: true,
+		// 	depthTest: false,
+		// 	depthWrite: false,
+		// 	// alphaTest: 0.5,
+		// });
 
 		this.state.bg.mesh = new THREE.Mesh(this.state.bg.geometry, this.state.bg.material);
 		this.state.bg.mesh.userData.id = this.id;
@@ -107,6 +125,8 @@ export default class Slide {
 
 		this.state.hero.mesh = new THREE.Mesh(this.state.hero.geometry, this.state.hero.material);
 		this.state.text.mesh = new THREE.Mesh(this.state.text.geometry, this.state.text.material);
+		// this.state.text.mesh.renderOrder = 10;
+		// console.log(this.state.text.mesh);
 
 		this.generalManager.managers.three.scene.add(this.state.bg.mesh);
 		this.generalManager.managers.three.scene.add(this.state.hero.mesh);
@@ -125,6 +145,7 @@ export default class Slide {
 			vertexShader: shadowVertex,
 			transparent: true,
 			depthTest: false,
+			depthWrite: false,
 		});
 
 		this.state.shadow.mesh = new THREE.Mesh(this.state.shadow.geometry, this.state.shadow.material);

@@ -15,8 +15,10 @@ void main() {
 	vec4 clr = texture2D(uImage, uv);
 	clr.a = clr.a * uOpacity;
 
+
 	
 	gl_FragColor = clr;
+	// if(gl_FragColor.a<0.5) discard;
 }
 
 // vec4 color = texture2D(uSampler0, vTextureCoord);

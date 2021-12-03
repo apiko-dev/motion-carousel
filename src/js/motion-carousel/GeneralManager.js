@@ -1,3 +1,4 @@
+import { throttle } from 'underscore';
 import ThreeManager from './ThreeManager';
 import SlidesManager from './SlidesManager';
 import DragManager from './DragManager';
@@ -128,6 +129,7 @@ export default class GeneralManager {
 			progress: [],
 			load: [],
 			slideOrderNumberToOpacity: [],
+			keydown: [],
 		};
 
 		this.handlers = new Map([
@@ -138,6 +140,7 @@ export default class GeneralManager {
 					pointerdown: this.pointerdown.bind(this),
 					pointermove: this.pointermove.bind(this),
 					pointerup: this.pointerup.bind(this),
+					keydown: this.keydown.bind(this),
 				},
 			],
 		]);
@@ -153,6 +156,9 @@ export default class GeneralManager {
 		window.create = this.create.bind(this);
 		window.destroy = this.destroy.bind(this);
 		window.toSlide = this.toSlide.bind(this);
+
+		this.toPrevSlideThrottled = throttle(this.toPrevSlide.bind(this), 500, { trailing: false });
+		this.toNextSlideThrottled = throttle(this.toNextSlide.bind(this), 500, { trailing: false });
 	}
 
 	create() {
@@ -294,6 +300,57 @@ export default class GeneralManager {
 
 	pointerup(event) {
 		this.eventCallbacks.pointerup.forEach((callback) => callback(event));
+	}
+
+	toSlideByIncrement(increment) {
+		if (this.managers.slides.state.direction === 'right') {
+			for (let i = 0; i < this.managers.slides.state.rights.length; i++) {
+				if (this.managers.slides.state.rights[i].originalIndex === this.currentSlideIndex) {
+					let index = i + increment;
+					if (index >= this.managers.slides.state.rights.length) index = 0;
+					else if (index < 0) index = this.managers.slides.state.rights.length - 1;
+					this.toSlide(this.managers.slides.state.rights[index].originalIndex);
+					break;
+				}
+			}
+		}
+		if (this.managers.slides.state.direction === 'left') {
+			for (let i = 0; i < this.managers.slides.state.lefts.length; i++) {
+				if (this.managers.slides.state.lefts[i].originalIndex === this.currentSlideIndex) {
+					let index = i + increment;
+					if (index >= this.managers.slides.state.rights.length) index = 0;
+					else if (index < 0) index = this.managers.slides.state.rights.length - 1;
+					this.toSlide(this.managers.slides.state.lefts[index].originalIndex);
+					break;
+				}
+			}
+		}
+		if (this.managers.slides.state.direction === 'normal') {
+			for (let i = 0; i < this.slides.length; i++) {
+				if (this.slides[i].originalIndex === this.currentSlideIndex) {
+					let index = i + increment;
+					if (index >= this.managers.slides.state.rights.length) index = 0;
+					else if (index < 0) index = this.managers.slides.state.rights.length - 1;
+					this.toSlide(this.slides[index].originalIndex);
+					break;
+				}
+			}
+		}
+	}
+
+	toPrevSlide() {
+		this.toSlideByIncrement(-1);
+	}
+
+	toNextSlide() {
+		this.toSlideByIncrement(1);
+	}
+
+	keydown({ key }) {
+		if (key === 'ArrowRight') this.toNextSlideThrottled();
+		if (key === 'ArrowLeft') this.toPrevSlideThrottled();
+
+		this.eventCallbacks.keydown.forEach((callback) => callback(key));
 	}
 
 	startDrag() {
