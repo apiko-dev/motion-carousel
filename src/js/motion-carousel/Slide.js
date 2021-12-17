@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import gsap from 'gsap';
+/* eslint-disable */
 
 import slidebgVertex from './shaders/slidebgVertex.glsl';
 import slidebgFragment from './shaders/slidebgFragment.glsl';
@@ -43,7 +44,7 @@ export default class Slide {
 		this.generalManager.managers.three.scene.remove(this.state.bg.mesh);
 		this.generalManager.managers.three.scene.remove(this.state.shadow.mesh);
 		this.generalManager.managers.three.scene.remove(this.state.hero.mesh);
-		this.generalManager.managers.three.scene.remove(this.state.text.mesh);
+		this.generalManager.managers.three.sceneText.remove(this.state.text.mesh);
 	}
 
 	show() {
@@ -53,7 +54,7 @@ export default class Slide {
 		this.generalManager.managers.three.scene.add(this.state.bg.mesh);
 		this.generalManager.managers.three.scene.add(this.state.shadow.mesh);
 		this.generalManager.managers.three.scene.add(this.state.hero.mesh);
-		this.generalManager.managers.three.scene.add(this.state.text.mesh);
+		this.generalManager.managers.three.sceneText.add(this.state.text.mesh);
 	}
 
 	create() {
@@ -100,10 +101,13 @@ export default class Slide {
 			fragmentShader: textFragment,
 			vertexShader: slidebgVertex,
 			transparent: true,
-			depthTest: false,
-			depthWrite: false,
+			// depthTest: false,
+			// depthWrite: false,
 			// alphaTest: 0.5,
 		});
+
+		// custom depth
+
 		// this.state.text.material = new THREE.ShaderMaterial({
 		// 	uniforms: {
 		// 		uImage: {},
@@ -125,12 +129,13 @@ export default class Slide {
 
 		this.state.hero.mesh = new THREE.Mesh(this.state.hero.geometry, this.state.hero.material);
 		this.state.text.mesh = new THREE.Mesh(this.state.text.geometry, this.state.text.material);
+		this.state.text.mesh.name = 'slide-text';
 		// this.state.text.mesh.renderOrder = 10;
 		// console.log(this.state.text.mesh);
 
 		this.generalManager.managers.three.scene.add(this.state.bg.mesh);
 		this.generalManager.managers.three.scene.add(this.state.hero.mesh);
-		this.generalManager.managers.three.scene.add(this.state.text.mesh);
+		this.generalManager.managers.three.sceneText.add(this.state.text.mesh);
 
 		this.state.shadow.geometry = new THREE.PlaneBufferGeometry(1, 1, 1, 1);
 		this.state.shadow.material = new THREE.ShaderMaterial({
@@ -169,18 +174,28 @@ export default class Slide {
 			0,
 			-z + (this.generalManager.state.slideHeight / 30) * this.state.bigCoef + 2.1
 		);
-		this.state.text.mesh.rotation.set(0, angle, 0);
+
 		this.state.hero.mesh.position.set(x, 0, -z + (this.generalManager.state.slideHeight / 30) * this.state.bigCoef + 2);
-		this.state.hero.mesh.rotation.set(0, angle, 0);
-		this.state.bg.mesh.position.set(x, 0, -z);
-		this.state.bg.mesh.rotation.set(0, angle, 0);
+
+		this.state.bg.mesh.position.set(
+			x,
+			0,
+			-z + ((this.generalManager.state.slideHeight / 30) * this.state.bigCoef) / 1.5 + 2.0
+		);
 
 		this.state.shadow.mesh.position.set(
 			x,
 			-this.generalManager.state.slideHeight / 2 - this.generalManager.state.slideHeight / 30,
-			-z + (this.generalManager.state.slideHeight / 2) * this.shadowScaleHeight
+			-z +
+				(this.generalManager.state.slideHeight / 2) * this.shadowScaleHeight +
+				((this.generalManager.state.slideHeight / 30) * this.state.bigCoef) / 1.5 +
+				2.0
 			// + (this.generalManager.state.slideHeight / 30) * this.state.bigCoef
 		);
+
+		this.state.bg.mesh.rotation.set(0, angle, 0);
+		this.state.hero.mesh.rotation.set(0, angle, 0);
+		this.state.text.mesh.rotation.set(0, angle, 0);
 		this.state.shadow.mesh.rotation.set(90 / (180 / Math.PI), 0, -angle);
 		this.state.bg.material.uniforms.uOpacity.value = opacity;
 		this.state.hero.material.uniforms.uOpacity.value = opacity;

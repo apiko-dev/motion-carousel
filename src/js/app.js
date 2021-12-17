@@ -26,3 +26,18 @@ mc.addListener('stopDrag', (i) => console.log('stopDrag', i)); // eslint-disable
 mc.addListener('slideClick', (i, prev) => console.log('slideClick', i, prev)); // eslint-disable-line
 mc.addListener('progress', (p) => console.log('progress', p)); // eslint-disable-line
 mc.addListener('load', () => console.log('load')); // eslint-disable-line
+
+document.querySelector('.motion-carousel-prev').addEventListener('pointerdown', (e) => {
+	e.stopPropagation();
+});
+document.querySelector('.motion-carousel-prev').addEventListener('pointerup', (e) => {
+	e.stopPropagation();
+	mc.toPrevSlideThrottled();
+});
+document.querySelector('.motion-carousel-next').addEventListener('pointerdown', (e) => {
+	e.stopPropagation();
+});
+document.querySelector('.motion-carousel-next').addEventListener('pointerup', (e) => {
+	e.stopPropagation();
+	mc.toNextSlideThrottled();
+});

@@ -4,7 +4,29 @@ title: Index page
 
 {% extends "layouts/_layout.html" %} {% block content %}
 
-<div id="motion-carousel-container"></div>
+<div id="motion-carousel-container">
+	<style></style>
+	<div class="motion-carousel-next">
+		<svg width="12" height="22" viewBox="0 0 12 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path
+				fill-rule="evenodd"
+				clip-rule="evenodd"
+				d="M9.75541 11L0 1.13491L1.12229 0L12 11L1.12229 22L0 20.8651L9.75541 11Z"
+				fill="white"
+			/>
+		</svg>
+	</div>
+	<div class="motion-carousel-prev">
+		<svg width="12" height="22" viewBox="0 0 12 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path
+				fill-rule="evenodd"
+				clip-rule="evenodd"
+				d="M2.24459 11L12 20.8651L10.8777 22L-9.45698e-07 11L10.8777 1.80923e-06L12 1.13491L2.24459 11Z"
+				fill="white"
+			/>
+		</svg>
+	</div>
+</div>
 
 <div class="scroll-test" style="height: 200vh; display: flex; flex-direction: column; justify-content: center">
 	<h2>Scroll test</h2>

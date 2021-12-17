@@ -2,7 +2,35 @@ body
 	overscroll-behavior-x: none
 #motion-carousel-container 
 	height: 100vh
-	// background-image: url("../img/bg.jpg")
-	// background-size: cover
-	// background-position: center
-	// background-repeat: no-repeat
+
+.motion-carousel-container 
+	position: relative
+
+.motion-carousel-next,
+.motion-carousel-prev 
+	position: absolute
+	top: 50%
+	left: 50%
+	transform: translate(calc(-40vw - 50%), -50%)
+	width: 50px
+	height: 50px
+	/* background: red; *
+	cursor: pointer
+	+r(768)
+		display: none
+	/* margin-left: 20vw; *
+
+.motion-carousel-next svg,
+.motion-carousel-prev svg 
+	position: absolute
+	top: 50%
+	left: 50%
+	transform: translate(-50%, -50%)
+	transition: transform 0.3s ease
+
+.motion-carousel-next:hover svg,
+.motion-carousel-prev:hover svg 
+	transform: translate(-50%, -50%) scale(1.2)
+
+.motion-carousel-next 
+	transform: translate(calc(40vw - 50%), -50%)

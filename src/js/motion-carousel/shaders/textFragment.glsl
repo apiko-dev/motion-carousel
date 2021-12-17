@@ -18,7 +18,11 @@ void main() {
 
 	
 	gl_FragColor = clr;
-	// if(gl_FragColor.a<0.5) discard;
+	// gl_FragColor = vec4(1.,0.,0.,0.1);
+	if(gl_FragColor.a<0.5) {
+		// gl_FragColor = vec4(0.,1.,0.,0.1);
+		// discard;
+	}
 }
 
 // vec4 color = texture2D(uSampler0, vTextureCoord);

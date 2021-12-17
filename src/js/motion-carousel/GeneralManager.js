@@ -16,8 +16,8 @@ export default class GeneralManager {
 			breakpoints: [
 				{
 					minWidth: 0,
-					slideWidth: 128,
-					slideHeight: 270,
+					slideWidth: 128 * 0.9,
+					slideHeight: 270 * 0.9,
 					slideOrderNumberToOpacity: 5,
 					slideGap: 5,
 					cameraPositionZ: 130,
@@ -34,10 +34,10 @@ export default class GeneralManager {
 				},
 				{
 					minWidth: 325,
-					slideWidth: 145,
-					slideHeight: 300,
+					slideWidth: 145 * 0.9,
+					slideHeight: 300 * 0.9,
 					slideOrderNumberToOpacity: 5,
-					cameraPositionZ: 180,
+					// cameraPositionZ: 180,
 					scaleGap0: 0,
 					scaleGap1: 0.4,
 					scaleGap2: 0.6,
@@ -64,8 +64,8 @@ export default class GeneralManager {
 				},
 				{
 					minWidth: 600,
-					slideWidth: 244,
-					slideHeight: 512,
+					slideWidth: 244 * 0.9,
+					slideHeight: 512 * 0.9,
 					slideOrderNumberToOpacity: 5,
 					scaleGap0: 0,
 					scaleGap1: 0.8,
@@ -81,14 +81,14 @@ export default class GeneralManager {
 				},
 				{
 					minWidth: 769,
-					slideWidth: 288,
-					slideHeight: 564,
+					slideWidth: 288 * 0.9,
+					slideHeight: 564 * 0.9,
 					slideOrderNumberToOpacity: 7,
 					scaleGap0: 1.2,
-					scaleGap1: 1.9,
-					scaleGap2: 2.3,
-					scaleGap3: 4.7,
-					scaleGap4: 4.5,
+					scaleGap1: 1.3,
+					scaleGap2: 1.5,
+					scaleGap3: 3.4,
+					scaleGap4: 6.2,
 					scaleWidth0: 1,
 					scaleWidth1: 0.55,
 					scaleWidth2: 0.7,
@@ -112,7 +112,7 @@ export default class GeneralManager {
 			slideOrderNumberToOpacity: 5,
 			slideGap: 50,
 			cameraPositionZ: 150,
-			maxScaleToBig: 1.5,
+			maxScaleToBig: 2,
 		};
 
 		this.eventCallbacks = {
@@ -137,10 +137,16 @@ export default class GeneralManager {
 				window,
 				{
 					resize: this.resize.bind(this),
+
+					keydown: this.keydown.bind(this),
+				},
+			],
+			[
+				this.DOM.container,
+				{
 					pointerdown: this.pointerdown.bind(this),
 					pointermove: this.pointermove.bind(this),
 					pointerup: this.pointerup.bind(this),
-					keydown: this.keydown.bind(this),
 				},
 			],
 		]);
@@ -291,6 +297,7 @@ export default class GeneralManager {
 	}
 
 	pointerdown(event) {
+		console.log('pointer down window');
 		this.eventCallbacks.pointerdown.forEach((callback) => callback(event));
 	}
 

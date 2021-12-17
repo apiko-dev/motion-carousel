@@ -209,7 +209,7 @@ export default class SlidesManager {
 			if (Math.abs(orderNumber) > 1) {
 				greyScale = 1;
 			}
-			const sin = Math.sin(x * 1.65 * Math.PI);
+			const sin = Math.sin(x * 1.1 * Math.PI);
 			const angle = 0.19 * Math.sign(sin) * Math.abs(sin) ** 1.3;
 
 			slideManager.updatePos(
