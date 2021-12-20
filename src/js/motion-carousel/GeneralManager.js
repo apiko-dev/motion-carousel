@@ -113,6 +113,7 @@ export default class GeneralManager {
 			slideGap: 50,
 			cameraPositionZ: 150,
 			maxScaleToBig: 2,
+			isBig: false,
 		};
 
 		this.eventCallbacks = {
@@ -184,7 +185,7 @@ export default class GeneralManager {
 
 		this.eventCallbacks.create.forEach((callback) => callback());
 
-		this.becomeBig();
+		this.becomeBig(true);
 
 		window.requestAnimationFrame(this.tick.bind(this));
 	}
@@ -218,11 +219,17 @@ export default class GeneralManager {
 		);
 	}
 
-	becomeDefault() {
+	becomeDefault(required) {
+		if (!this.state.isBig && !required) return;
+
 		this.slides.forEach(({ slideManager }) => slideManager.state.isBig && slideManager.becomeDefault());
+		this.state.isBig = false;
 	}
 
-	becomeBig() {
+	becomeBig(required) {
+		if ((!this.managers.drag.getIsMouseIntersect() || this.state.isBig) && !required) return;
+
+		this.state.isBig = true;
 		this.slides[this.currentSlideShadowIndex].slideManager.becomeBig();
 	}
 
@@ -297,7 +304,6 @@ export default class GeneralManager {
 	}
 
 	pointerdown(event) {
-		console.log('pointer down window');
 		this.eventCallbacks.pointerdown.forEach((callback) => callback(event));
 	}
 
@@ -361,12 +367,13 @@ export default class GeneralManager {
 	}
 
 	startDrag() {
-		this.becomeDefault();
+		this.becomeDefault(true);
+		console.log('default');
 		this.eventCallbacks.startDrag.forEach((callback) => callback(this.currentSlideIndex));
 	}
 
 	stopDrag() {
-		this.becomeBig();
+		this.becomeBig(true);
 		this.eventCallbacks.stopDrag.forEach((callback) => callback(this.currentSlideIndex));
 	}
 

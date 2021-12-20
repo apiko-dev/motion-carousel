@@ -40,7 +40,7 @@ export default class ThreeManager {
 			powerPreference: 'high-performance',
 		});
 		this.renderer.setSize(this.generalManager.width, this.generalManager.height);
-		this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+		this.renderer.setPixelRatio(Math.max(window.devicePixelRatio, 2));
 		// this.renderer.shadowMap.enabled = true;
 		this.renderer.autoClear = false;
 		// this.renderer.sortObjects = false;
@@ -82,11 +82,11 @@ export default class ThreeManager {
 			maxblur: 0.005,
 		};
 
-		// const gui = new dat.GUI();
-		// gui.add(this.effectController, 'focus', 10.0, 3000.0, 5).onChange(this.matChanger.bind(this));
-		// gui.add(this.effectController, 'aperture', 0, 50, 0.1).onChange(this.matChanger.bind(this));
-		// gui.add(this.effectController, 'maxblur', 0.0, 0.01, 0.001).onChange(this.matChanger.bind(this));
-		// gui.close();
+		const gui = new dat.GUI();
+		gui.add(this.effectController, 'focus', 10.0, 3000.0, 5).onChange(this.matChanger.bind(this));
+		gui.add(this.effectController, 'aperture', 0, 50, 0.1).onChange(this.matChanger.bind(this));
+		gui.add(this.effectController, 'maxblur', 0.0, 0.01, 0.001).onChange(this.matChanger.bind(this));
+		gui.close();
 
 		// matChanger();
 		this.matChanger();

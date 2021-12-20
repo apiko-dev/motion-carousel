@@ -118,14 +118,17 @@ export default class DragManager {
 
 		if (this.state.isMovedX || (!this.getIsMouseIntersect() && this.state.isPointerdown)) {
 			this.generalManager.managers.three.renderer.domElement.style.cursor = 'grabbing';
+			// this.generalManager.becomeBig();
 		}
 
 		if (this.getIsMouseIntersect() && !this.state.isPointerdown) {
 			this.generalManager.managers.three.renderer.domElement.style.cursor = 'pointer';
+			this.generalManager.becomeBig();
 		}
 
 		if (!this.getIsMouseIntersect() && !this.state.isPointerdown) {
 			this.generalManager.managers.three.renderer.domElement.style.cursor = 'grab';
+			if (event.pointerType !== 'touch') this.generalManager.becomeDefault();
 		}
 
 		this.state.y1 = this.state.y2;
