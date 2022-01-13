@@ -40,7 +40,7 @@ export default class ThreeManager {
 			powerPreference: 'high-performance',
 		});
 		this.renderer.setSize(this.generalManager.width, this.generalManager.height);
-		this.renderer.setPixelRatio(Math.max(window.devicePixelRatio, 2));
+		this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 		// this.renderer.shadowMap.enabled = true;
 		this.renderer.autoClear = false;
 		// this.renderer.sortObjects = false;

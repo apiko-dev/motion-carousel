@@ -143,7 +143,13 @@ export default class SlidesManager {
 			.to(this.generalManager.state, { sliderPositionEase: x, duration, ease: Power3.easeInOut }, 0)
 			.to(
 				this.generalManager.state,
-				{ duration: duration * 0.7, onComplete: this.generalManager.becomeBig.bind(this.generalManager) },
+				{ 
+					duration: duration * 0.7, 
+					onComplete: ()=>{
+						// this.generalManager.becomeBig.bind(this.generalManager) 
+						this.generalManager.becomeBig(true)
+					}
+				},
 				0
 			);
 

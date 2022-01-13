@@ -113,7 +113,7 @@ export default class GeneralManager {
 			slideGap: 50,
 			cameraPositionZ: 150,
 			maxScaleToBig: 2,
-			isBig: false,
+			isBig: true,
 		};
 
 		this.eventCallbacks = {
@@ -368,7 +368,7 @@ export default class GeneralManager {
 
 	startDrag() {
 		this.becomeDefault(true);
-		console.log('default');
+
 		this.eventCallbacks.startDrag.forEach((callback) => callback(this.currentSlideIndex));
 	}
 

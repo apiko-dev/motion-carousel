@@ -4,6 +4,8 @@ import { gsap, Power3 } from 'gsap';
 export default class DragManager {
 	constructor(generalManager) {
 		this.generalManager = generalManager;
+		this.nextArrow = document.body.querySelector('.motion-carousel-next')
+		this.prevArrow = document.body.querySelector('.motion-carousel-prev')
 
 		this.state = {
 			isPointerdown: false,
@@ -37,9 +39,11 @@ export default class DragManager {
 			pointerup: this.pointerup.bind(this),
 			tick: this.tick.bind(this),
 		};
+		
 
 		this.generalManager.addListener('pointerdown', this.handlers.pointerdown);
 		this.generalManager.addListener('pointermove', this.handlers.pointermove);
+		// this.generalManager.addArrowListener('pointermove', this.handlers.pointermoveArrow);
 		this.generalManager.addListener('pointerup', this.handlers.pointerup);
 		this.generalManager.addListener('tick', this.handlers.tick);
 	}
@@ -75,6 +79,8 @@ export default class DragManager {
 	}
 
 	pointermove(event) {
+		const overArrows = event.pointerType !== 'touch' && (this.nextArrow.contains(event.target) || this.prevArrow.contains(event.target))
+		// console.log(overArrows )
 		this.state.x2 = event.pageX;
 		this.state.y2 = event.pageY;
 
@@ -120,16 +126,22 @@ export default class DragManager {
 			this.generalManager.managers.three.renderer.domElement.style.cursor = 'grabbing';
 			// this.generalManager.becomeBig();
 		}
+		if(overArrows){
+			this.generalManager.becomeBig(true);
+		} else{
+			if (this.getIsMouseIntersect() && !this.state.isPointerdown) {
+				this.generalManager.managers.three.renderer.domElement.style.cursor = 'pointer';
+				this.generalManager.becomeBig();
+			}
 
-		if (this.getIsMouseIntersect() && !this.state.isPointerdown) {
-			this.generalManager.managers.three.renderer.domElement.style.cursor = 'pointer';
-			this.generalManager.becomeBig();
-		}
 
-		if (!this.getIsMouseIntersect() && !this.state.isPointerdown) {
-			this.generalManager.managers.three.renderer.domElement.style.cursor = 'grab';
-			if (event.pointerType !== 'touch') this.generalManager.becomeDefault();
+			if (!this.getIsMouseIntersect() && !this.state.isPointerdown) {
+				this.generalManager.managers.three.renderer.domElement.style.cursor = 'grab';
+				if (event.pointerType !== 'touch') this.generalManager.becomeDefault();
+			}
 		}
+		
+		
 
 		this.state.y1 = this.state.y2;
 	}
