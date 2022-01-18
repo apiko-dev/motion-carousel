@@ -151,7 +151,7 @@ export default class DragManager {
 		this.state.mouse.y = -(event.pageY / this.generalManager.height) * 2 + 1;
 
 		if (!this.state.isMovedX && !this.state.isClicked && !this.state.isMovedY) {
-			this.click();
+			this.click(event);
 		}
 
 		this.state.isPointerdown = false;
@@ -242,11 +242,17 @@ export default class DragManager {
 			.object.userData.id;
 	}
 
-	click() {
+	click(ev) {
 		if (this.getIsMouseIntersect()) {
 			this.state.isClicked = true;
 			this.state.delta = 0;
-			this.generalManager.slideClick(this.getMouseIntersectId());
+			// this.generalManager.slideClick(this.getMouseIntersectId());
+			if(ev.pageX<this.generalManager.width/2){
+				this.generalManager.toPrevSlideThrottled()
+			}
+			else{
+				this.generalManager.toNextSlideThrottled()
+			}
 			this.state.isDragStarted = false;
 		}
 	}

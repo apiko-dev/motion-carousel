@@ -316,6 +316,7 @@ export default class GeneralManager {
 	}
 
 	toSlideByIncrement(increment) {
+		
 		if (this.managers.slides.state.direction === 'right') {
 			for (let i = 0; i < this.managers.slides.state.rights.length; i++) {
 				if (this.managers.slides.state.rights[i].originalIndex === this.currentSlideIndex) {
@@ -350,6 +351,8 @@ export default class GeneralManager {
 			}
 		}
 	}
+
+
 
 	toPrevSlide() {
 		this.toSlideByIncrement(-1);
@@ -388,6 +391,7 @@ export default class GeneralManager {
 	}
 
 	toSlide(originalIndex, fast) {
+		
 		if (originalIndex >= this.slides.length || originalIndex < 0) {
 			console.error(`The slide by index ${originalIndex} is not exists`); // eslint-disable-line
 			return;
